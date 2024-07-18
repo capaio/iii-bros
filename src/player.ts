@@ -12,12 +12,12 @@ export class Player {
     jumpStrength: number;
     isOnGround: boolean = false;
 
-    constructor(x: number, y: number) {
+    constructor() {
         this.width = 0.1 * window.innerHeight; // Adjusted width for better proportions
         this.height = 0.25 * window.innerHeight; // 25% of the window height
         this.jumpStrength = 18; // Jump height is twice the character height
-        this.x = x;
-        this.y = y;
+        this.x = 0; // Spawn on the left
+        this.y = 0; // Drop from the top
 
         window.addEventListener('keydown', (e) => this.onKeyDown(e));
         window.addEventListener('keyup', (e) => this.onKeyUp(e));

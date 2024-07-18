@@ -8,7 +8,7 @@ window.onload = () => {
 
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
 
-    const player = new Player(canvas.width / 2, canvas.height - 100);
+    const player = new Player();
     const level = new Level();
     let score = 0;
 

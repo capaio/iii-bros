@@ -9,12 +9,13 @@ export class Player {
     velocityX: number = 0;
     speed: number = 5;
     gravity: number = 0.5;
-    jumpStrength: number = 10;
+    jumpStrength: number;
     isOnGround: boolean = false;
 
     constructor(x: number, y: number) {
         this.width = 0.1 * window.innerHeight; // Adjusted width for better proportions
         this.height = 0.25 * window.innerHeight; // 25% of the window height
+        this.jumpStrength = 18; // Jump height is twice the character height
         this.x = x;
         this.y = y;
 

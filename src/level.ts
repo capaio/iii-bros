@@ -5,12 +5,12 @@ import { Player } from './player';
 export class Level {
     items: Item[] = [];
     obstacles: Obstacle[] = [];
-    floorHeight: number = window.innerHeight;
+    floorHeight: number = window.innerHeight - 40; // Adjust floor height
 
     constructor() {
         // Initialize items and obstacles here
-        this.items.push(new Item(100, this.floorHeight - 80)); // Adjusted position
-        this.obstacles.push(new Obstacle(300, this.floorHeight - 80)); // Adjusted position
+        this.items.push(new Item(100, this.floorHeight - 60)); // Adjusted position
+        this.obstacles.push(new Obstacle(300, this.floorHeight - 60)); // Adjusted position
     }
 
     update(player: Player) {
@@ -40,7 +40,7 @@ export class Level {
     draw(context: CanvasRenderingContext2D) {
         // Draw floor
         context.fillStyle = 'black';
-        context.fillRect(0, this.floorHeight - 10, context.canvas.width, 10);
+        context.fillRect(0, this.floorHeight, context.canvas.width, 40); // Adjusted floor height
 
         // Draw items and obstacles
         this.items.forEach(item => item.draw(context));

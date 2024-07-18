@@ -64,11 +64,13 @@ export class Player {
 
         this.checkCollisions(obstacles);
 
-        if (this.y + this.height < window.innerHeight) {
+        const floorHeight = window.innerHeight - 40; // Adjusted floor height
+
+        if (this.y + this.height < floorHeight) {
             this.velocityY += this.gravity;
             this.isOnGround = false;
         } else {
-            this.y = window.innerHeight - this.height;
+            this.y = floorHeight - this.height;
             this.velocityY = 0;
             this.isOnGround = true;
         }

@@ -3,50 +3,60 @@ import { Level } from './level';
 
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
+    const splashScreen = document.getElementById('splashScreen') as HTMLDivElement;
+    const playButton = document.getElementById('playButton') as HTMLButtonElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
 
-    const player = new Player();
-    const level = new Level();
-    let score = 0;
+    playButton.addEventListener('click', () => {
+        splashScreen.style.display = 'none';
+        canvas.style.display = 'block';
+        startGame();
+    });
 
-    const gameLoop = () => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
+    const startGame = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        level.update(player);
-        player.update(level.obstacles);
+        const player = new Player();
+        const level = new Level();
+        let score = 0;
 
-        level.draw(context);
-        player.draw(context);
+        const gameLoop = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Update and draw score
-        context.fillStyle = 'black';
-        context.font = '20px Arial';
-        context.fillText(`Score: ${score}`, canvas.width - 100, 30);
+            level.update(player);
+            player.update(level.obstacles);
 
-        requestAnimationFrame(gameLoop);
+            level.draw(context);
+            player.draw(context);
+
+            // Update and draw score
+            context.fillStyle = 'black';
+            context.font = '20px Arial';
+            context.fillText(`Score: ${score}`, canvas.width - 100, 30);
+
+            requestAnimationFrame(gameLoop);
+        };
+
+        // Touch controls
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            if (touch.clientX < canvas.width / 2) {
+                player.moveLeft();
+            } else {
+                player.moveRight();
+            }
+        });
+
+        canvas.addEventListener('touchend', () => {
+            player.stop();
+        });
+
+        // Listen for item collection
+        window.addEventListener('itemCollected', () => {
+            score += 1;
+        });
+
+        gameLoop();
     };
-
-    // Touch controls
-    canvas.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        if (touch.clientX < canvas.width / 2) {
-            player.moveLeft();
-        } else {
-            player.moveRight();
-        }
-    });
-
-    canvas.addEventListener('touchend', () => {
-        player.stop();
-    });
-
-    // Listen for item collection
-    window.addEventListener('itemCollected', () => {
-        score += 1;
-    });
-
-    gameLoop();
 };

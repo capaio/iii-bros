@@ -9,8 +9,8 @@ export class Level {
 
     constructor() {
         // Initialize items and obstacles here
-        this.items.push(new Item(100, this.floorHeight - 60));
-        this.obstacles.push(new Obstacle(300, this.floorHeight - 60));
+        this.items.push(new Item(100, this.floorHeight - 80)); // Adjusted position
+        this.obstacles.push(new Obstacle(300, this.floorHeight - 80)); // Adjusted position
     }
 
     update(player: Player) {

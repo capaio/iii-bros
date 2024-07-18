@@ -3,8 +3,8 @@ import { Obstacle } from './obstacle';
 export class Player {
     x: number;
     y: number;
-    width: number = 30;
-    height: number = 50;
+    width: number;
+    height: number;
     velocityY: number = 0;
     velocityX: number = 0;
     speed: number = 5;
@@ -13,6 +13,8 @@ export class Player {
     isOnGround: boolean = false;
 
     constructor(x: number, y: number) {
+        this.width = 0.1 * window.innerHeight; // Adjusted width for better proportions
+        this.height = 0.25 * window.innerHeight; // 25% of the window height
         this.x = x;
         this.y = y;
 

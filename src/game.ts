@@ -5,11 +5,17 @@ window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
     const splashScreen = document.getElementById('splashScreen') as HTMLDivElement;
     const playButton = document.getElementById('playButton') as HTMLButtonElement;
+    const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
+    const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+    splashMusic.play();
 
     playButton.addEventListener('click', () => {
         splashScreen.style.display = 'none';
         canvas.style.display = 'block';
+        splashMusic.pause();
+        gameMusic.play();
         startGame();
     });
 

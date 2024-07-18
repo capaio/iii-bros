@@ -1,3 +1,5 @@
+import { Obstacle } from './obstacle';
+
 export class Player {
     x: number;
     y: number;
@@ -20,9 +22,9 @@ export class Player {
 
     onKeyDown(e: KeyboardEvent) {
         if (e.code === 'ArrowLeft') {
-            this.velocityX = -this.speed;
+            this.moveLeft();
         } else if (e.code === 'ArrowRight') {
-            this.velocityX = this.speed;
+            this.moveRight();
         } else if (e.code === 'Space') {
             this.jump();
         }
@@ -30,8 +32,20 @@ export class Player {
 
     onKeyUp(e: KeyboardEvent) {
         if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-            this.velocityX = 0;
+            this.stop();
         }
+    }
+
+    moveLeft() {
+        this.velocityX = -this.speed;
+    }
+
+    moveRight() {
+        this.velocityX = this.speed;
+    }
+
+    stop() {
+        this.velocityX = 0;
     }
 
     jump() {
@@ -41,18 +55,45 @@ export class Player {
         }
     }
 
-    update() {
+    update(obstacles: Obstacle[]) {
         this.x += this.velocityX;
         this.y += this.velocityY;
 
-        if (this.y + this.height < 600) {
+        this.checkCollisions(obstacles);
+
+        if (this.y + this.height < window.innerHeight) {
             this.velocityY += this.gravity;
             this.isOnGround = false;
         } else {
-            this.y = 600 - this.height;
+            this.y = window.innerHeight - this.height;
             this.velocityY = 0;
             this.isOnGround = true;
         }
+    }
+
+    checkCollisions(obstacles: Obstacle[]) {
+        obstacles.forEach(obstacle => {
+            if (this.x < obstacle.x + obstacle.width &&
+                this.x + this.width > obstacle.x &&
+                this.y < obstacle.y + obstacle.height &&
+                this.y + this.height > obstacle.y) {
+                // Collision detected
+                if (this.velocityY > 0 && this.y + this.height - this.velocityY <= obstacle.y) {
+                    // Landed on top of obstacle
+                    this.y = obstacle.y - this.height;
+                    this.velocityY = 0;
+                    this.isOnGround = true;
+                } else {
+                    // Horizontal collision
+                    if (this.velocityX > 0) {
+                        this.x = obstacle.x - this.width;
+                    } else if (this.velocityX < 0) {
+                        this.x = obstacle.x + obstacle.width;
+                    }
+                    this.velocityX = 0;
+                }
+            }
+        });
     }
 
     draw(context: CanvasRenderingContext2D) {

@@ -8,9 +8,19 @@ export class Level {
     floorHeight: number = window.innerHeight - 40; // Adjust floor height
 
     constructor() {
-        // Initialize items and obstacles here
-        this.items.push(new Item(100, this.floorHeight - 60)); // Adjusted position
+        // Initialize obstacles here
         this.obstacles.push(new Obstacle(300, this.floorHeight - 60)); // Adjusted position
+
+        // Spawn beer items in different locations
+        this.spawnBeerItems(5); // Spawns 5 beer items
+    }
+
+    spawnBeerItems(count: number) {
+        for (let i = 0; i < count; i++) {
+            const x = Math.random() * (window.innerWidth - 100); // Random x position within the window
+            const y = Math.random() * (this.floorHeight - 100); // Random y position above the floor
+            this.items.push(new Item(x, y, 'beer.webp'));
+        }
     }
 
     update(player: Player) {
@@ -39,7 +49,7 @@ export class Level {
 
     draw(context: CanvasRenderingContext2D) {
         // Draw floor
-        context.fillStyle = 'black';
+        context.fillStyle = '#954b0c'; // New floor color
         context.fillRect(0, this.floorHeight, context.canvas.width, 40); // Adjusted floor height
 
         // Draw items and obstacles

@@ -38,8 +38,8 @@ window.onload = () => {
 
             // Update and draw score
             context.fillStyle = 'black';
-            context.font = '20px Arial';
-            context.fillText(`Score: ${score}`, canvas.width - 100, 30);
+            context.font = '20px "Press Start 2P", cursive';
+            context.fillText(score.toString().padStart(3, '0'), canvas.width - 100, 30);
 
             requestAnimationFrame(gameLoop);
         };

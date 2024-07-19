@@ -80,14 +80,7 @@ export class Player {
         this.x += this.velocityX;
         this.y += this.velocityY;
 
-        this.checkCollisions(obstacles);
-
         const floorHeight = window.innerHeight - 40; // Adjusted floor height
-
-        // Ensure player does not go beyond the left edge
-        if (this.x < 0) {
-            this.x = 0;
-        }
 
         if (this.y + this.height < floorHeight) {
             this.velocityY += this.gravity;
@@ -97,6 +90,8 @@ export class Player {
             this.velocityY = 0;
             this.isOnGround = true;
         }
+
+        this.checkCollisions(obstacles);
     }
 
     checkCollisions(obstacles: Obstacle[]) {
@@ -105,7 +100,7 @@ export class Player {
                 this.x + this.width > obstacle.x &&
                 this.y < obstacle.y + obstacle.height &&
                 this.y + this.height > obstacle.y) {
-                // Collision detected
+
                 if (this.velocityY > 0 && this.y + this.height - this.velocityY <= obstacle.y) {
                     // Landed on top of obstacle
                     this.y = obstacle.y - this.height;

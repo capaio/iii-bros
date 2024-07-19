@@ -80,6 +80,11 @@ export class Player {
 
         const floorHeight = window.innerHeight - 40; // Adjusted floor height
 
+        // Ensure player does not go beyond the left edge
+        if (this.x < 0) {
+            this.x = 0;
+        }
+
         if (this.y + this.height < floorHeight) {
             this.velocityY += this.gravity;
             this.isOnGround = false;

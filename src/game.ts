@@ -10,7 +10,7 @@ window.onload = () => {
     const scoreDisplay = document.getElementById('score') as HTMLDivElement;
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
-    const collectSound = document.getElementById('collectSound') as HTMLAudioElement;
+    const collectSoundSrc = 'coin.wav';
     const leftButton = document.getElementById('leftButton') as HTMLButtonElement;
     const rightButton = document.getElementById('rightButton') as HTMLButtonElement;
     const jumpButton = document.getElementById('jumpButton') as HTMLButtonElement;
@@ -124,6 +124,7 @@ window.onload = () => {
         // Listen for item collection
         window.addEventListener('itemCollected', () => {
             score += 1;
+            const collectSound = new Audio(collectSoundSrc);
             collectSound.play();
         });
 

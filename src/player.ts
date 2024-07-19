@@ -163,7 +163,7 @@ export class Player {
         gameOverText.style.transform = 'translate(-50%, -50%)';
         gameOverText.style.fontSize = '48px';
         gameOverText.style.color = 'black';
-        gameOverText.style.fontFamily = 'Press Start 2P, cursive';
+        gameOverText.style.fontFamily = "'Press Start 2P', cursive";
         gameOverText.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
         gameOverText.style.border = '2px solid black';
         gameOverText.style.padding = '20px';

@@ -15,6 +15,7 @@ export class Player {
     aspectRatio: number;
     isMovingLeft: boolean = false;
     jumpSound: HTMLAudioElement;
+    isFalling: boolean = false;
 
     constructor() {
         this.image = new Image();
@@ -39,6 +40,8 @@ export class Player {
     }
 
     onKeyDown(e: KeyboardEvent) {
+        if (this.isFalling) return; // Disable controls if falling
+
         if (e.code === 'ArrowLeft') {
             this.moveLeft();
         } else if (e.code === 'ArrowRight') {
@@ -49,26 +52,32 @@ export class Player {
     }
 
     onKeyUp(e: KeyboardEvent) {
+        if (this.isFalling) return; // Disable controls if falling
+
         if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
             this.stop();
         }
     }
 
     moveLeft() {
+        if (this.isFalling) return; // Disable controls if falling
         this.velocityX = -this.speed;
         this.isMovingLeft = true;
     }
 
     moveRight() {
+        if (this.isFalling) return; // Disable controls if falling
         this.velocityX = this.speed;
         this.isMovingLeft = false;
     }
 
     stop() {
+        if (this.isFalling) return; // Disable controls if falling
         this.velocityX = 0;
     }
 
     jump() {
+        if (this.isFalling) return; // Disable controls if falling
         if (this.isOnGround) {
             this.velocityY = -this.jumpStrength;
             this.isOnGround = false;
@@ -76,7 +85,24 @@ export class Player {
         }
     }
 
+    fall() {
+        this.isFalling = true;
+        this.velocityX = 0;
+        this.velocityY = 10; // Faster fall speed
+        this.isOnGround = false;
+    }
+
     update(obstacles: Obstacle[]) {
+        if (this.isFalling) {
+            this.y += this.velocityY;
+            this.velocityY += this.gravity;
+
+            if (this.y > window.innerHeight) {
+                this.showGameOver();
+            }
+            return;
+        }
+
         this.x += this.velocityX;
         this.y += this.velocityY;
 
@@ -122,6 +148,19 @@ export class Player {
                 }
             }
         });
+    }
+
+    showGameOver() {
+        const gameOverText = document.createElement('div');
+        gameOverText.innerText = 'Game Over';
+        gameOverText.style.position = 'absolute';
+        gameOverText.style.top = '50%';
+        gameOverText.style.left = '50%';
+        gameOverText.style.transform = 'translate(-50%, -50%)';
+        gameOverText.style.fontSize = '48px';
+        gameOverText.style.color = 'white';
+        gameOverText.style.fontFamily = 'Press Start 2P, cursive';
+        document.body.appendChild(gameOverText);
     }
 
     draw(context: CanvasRenderingContext2D) {

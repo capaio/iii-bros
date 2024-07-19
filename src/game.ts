@@ -11,6 +11,9 @@ window.onload = () => {
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
     const collectSound = document.getElementById('collectSound') as HTMLAudioElement;
+    const leftButton = document.getElementById('leftButton') as HTMLButtonElement;
+    const rightButton = document.getElementById('rightButton') as HTMLButtonElement;
+    const jumpButton = document.getElementById('jumpButton') as HTMLButtonElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     let isMusicPlaying = false;
@@ -80,7 +83,7 @@ window.onload = () => {
             requestAnimationFrame(gameLoop);
         };
 
-        // Touch controls
+        // Touch controls for canvas
         canvas.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
             if (touch.clientX < canvas.width / 2) {
@@ -92,6 +95,27 @@ window.onload = () => {
 
         canvas.addEventListener('touchend', () => {
             player.stop();
+        });
+
+        // Button controls
+        leftButton.addEventListener('touchstart', () => {
+            player.moveLeft();
+        });
+
+        leftButton.addEventListener('touchend', () => {
+            player.stop();
+        });
+
+        rightButton.addEventListener('touchstart', () => {
+            player.moveRight();
+        });
+
+        rightButton.addEventListener('touchend', () => {
+            player.stop();
+        });
+
+        jumpButton.addEventListener('touchstart', () => {
+            player.jump();
         });
 
         // Listen for item collection

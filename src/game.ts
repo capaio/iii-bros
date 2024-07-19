@@ -5,19 +5,52 @@ window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
     const splashScreen = document.getElementById('splashScreen') as HTMLDivElement;
     const playButton = document.getElementById('playButton') as HTMLButtonElement;
+    const musicToggleButton = document.getElementById('musicToggleButton') as HTMLButtonElement;
+    const musicIcon = document.getElementById('musicIcon') as HTMLElement;
+    const scoreDisplay = document.getElementById('score') as HTMLDivElement;
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
     const collectSound = document.getElementById('collectSound') as HTMLAudioElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+    let isMusicPlaying = false;
+    let currentScreen = 'splash'; // Possible values: 'splash', 'game'
 
     splashMusic.play();
 
     playButton.addEventListener('click', () => {
         splashScreen.style.display = 'none';
         canvas.style.display = 'block';
+        scoreDisplay.style.display = 'block';
         splashMusic.pause();
         gameMusic.play();
+        currentScreen = 'game';
         startGame();
+    });
+
+    musicToggleButton.addEventListener('click', () => {
+        if (currentScreen === 'splash') {
+            if (isMusicPlaying) {
+                splashMusic.pause();
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+            } else {
+                splashMusic.play();
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+            }
+        } else if (currentScreen === 'game') {
+            if (isMusicPlaying) {
+                gameMusic.pause();
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+            } else {
+                gameMusic.play();
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+            }
+        }
+        isMusicPlaying = !isMusicPlaying;
     });
 
     const startGame = () => {
@@ -38,9 +71,7 @@ window.onload = () => {
             player.draw(context);
 
             // Update and draw score
-            context.fillStyle = 'black';
-            context.font = '20px "Press Start 2P", cursive';
-            context.fillText(score.toString().padStart(3, '0'), canvas.width - 100, 30);
+            scoreDisplay.textContent = score.toString().padStart(3, '0');
 
             requestAnimationFrame(gameLoop);
         };

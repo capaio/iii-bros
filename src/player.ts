@@ -11,13 +11,26 @@ export class Player {
     gravity: number = 0.5;
     jumpStrength: number;
     isOnGround: boolean = false;
+    image: HTMLImageElement;
+    aspectRatio: number;
 
     constructor() {
-        this.width = 0.1 * window.innerHeight; // Adjusted width for better proportions
-        this.height = 0.25 * window.innerHeight; // 25% of the window height
+        this.image = new Image();
+        this.image.src = 'iii.webp';
+        this.x = 0;
+        this.y = 0;
+        this.width = 0;
+        this.height = 0;
+        this.aspectRatio = 0;
+        this.image.onload = () => {
+            this.aspectRatio = this.image.width / this.image.height;
+            this.height = 0.25 * window.innerHeight; // 25% of the window height
+            this.width = this.height * this.aspectRatio; // Maintain the aspect ratio
+            this.x = 0; // Spawn on the left
+            this.y = 0; // Drop from the top
+        };
+
         this.jumpStrength = 18; // Jump height is twice the character height
-        this.x = 0; // Spawn on the left
-        this.y = 0; // Drop from the top
 
         window.addEventListener('keydown', (e) => this.onKeyDown(e));
         window.addEventListener('keyup', (e) => this.onKeyUp(e));
@@ -102,7 +115,6 @@ export class Player {
     }
 
     draw(context: CanvasRenderingContext2D) {
-        context.fillStyle = 'blue';
-        context.fillRect(this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }

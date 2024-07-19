@@ -7,6 +7,7 @@ window.onload = () => {
     const playButton = document.getElementById('playButton') as HTMLButtonElement;
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
+    const collectSound = document.getElementById('collectSound') as HTMLAudioElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     splashMusic.play();
@@ -61,6 +62,7 @@ window.onload = () => {
         // Listen for item collection
         window.addEventListener('itemCollected', () => {
             score += 1;
+            collectSound.play();
         });
 
         gameLoop();

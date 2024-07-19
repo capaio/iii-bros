@@ -25,6 +25,9 @@ window.onload = () => {
         splashScreen.style.display = 'none';
         canvas.style.display = 'block';
         scoreDisplay.style.display = 'block';
+        leftButton.style.display = 'flex';
+        rightButton.style.display = 'flex';
+        jumpButton.style.display = 'flex';
         splashMusic.pause();
         currentScreen = 'game';
 

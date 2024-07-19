@@ -23,8 +23,12 @@ window.onload = () => {
         canvas.style.display = 'block';
         scoreDisplay.style.display = 'block';
         splashMusic.pause();
-        gameMusic.play();
         currentScreen = 'game';
+
+        if (isMusicPlaying) {
+            gameMusic.play();
+        }
+
         startGame();
     });
 

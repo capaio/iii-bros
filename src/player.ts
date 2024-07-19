@@ -80,6 +80,11 @@ export class Player {
         this.x += this.velocityX;
         this.y += this.velocityY;
 
+        // Ensure player does not go beyond the left edge
+        if (this.x < 0) {
+            this.x = 0;
+        }
+
         const floorHeight = window.innerHeight - 40; // Adjusted floor height
 
         if (this.y + this.height < floorHeight) {

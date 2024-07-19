@@ -13,11 +13,12 @@ export class Player {
     isOnGround: boolean = false;
     image: HTMLImageElement;
     aspectRatio: number;
+    isMovingLeft: boolean = false;
 
     constructor() {
         this.image = new Image();
         this.image.src = 'iii.webp';
-        this.x = 0;
+        this.x = 0.05 * window.innerWidth; // Spawn 5% from the left
         this.y = 0;
         this.width = 0;
         this.height = 0;
@@ -26,8 +27,6 @@ export class Player {
             this.aspectRatio = this.image.width / this.image.height;
             this.height = 0.25 * window.innerHeight; // 25% of the window height
             this.width = this.height * this.aspectRatio; // Maintain the aspect ratio
-            this.x = 0; // Spawn on the left
-            this.y = 0; // Drop from the top
         };
 
         this.jumpStrength = 18; // Jump height is twice the character height
@@ -54,10 +53,12 @@ export class Player {
 
     moveLeft() {
         this.velocityX = -this.speed;
+        this.isMovingLeft = true;
     }
 
     moveRight() {
         this.velocityX = this.speed;
+        this.isMovingLeft = false;
     }
 
     stop() {
@@ -115,6 +116,13 @@ export class Player {
     }
 
     draw(context: CanvasRenderingContext2D) {
-        context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        if (this.isMovingLeft) {
+            context.save();
+            context.scale(-1, 1);
+            context.drawImage(this.image, -this.x - this.width, this.y, this.width, this.height);
+            context.restore();
+        } else {
+            context.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }
     }
 }

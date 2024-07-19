@@ -16,6 +16,7 @@ export class Player {
     isMovingLeft: boolean = false;
     jumpSound: HTMLAudioElement;
     isFalling: boolean = false;
+    gameOver: boolean = false;
 
     constructor() {
         this.image = new Image();
@@ -40,7 +41,7 @@ export class Player {
     }
 
     onKeyDown(e: KeyboardEvent) {
-        if (this.isFalling) return; // Disable controls if falling
+        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
 
         if (e.code === 'ArrowLeft') {
             this.moveLeft();
@@ -52,7 +53,7 @@ export class Player {
     }
 
     onKeyUp(e: KeyboardEvent) {
-        if (this.isFalling) return; // Disable controls if falling
+        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
 
         if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
             this.stop();
@@ -60,24 +61,24 @@ export class Player {
     }
 
     moveLeft() {
-        if (this.isFalling) return; // Disable controls if falling
+        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
         this.velocityX = -this.speed;
         this.isMovingLeft = true;
     }
 
     moveRight() {
-        if (this.isFalling) return; // Disable controls if falling
+        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
         this.velocityX = this.speed;
         this.isMovingLeft = false;
     }
 
     stop() {
-        if (this.isFalling) return; // Disable controls if falling
+        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
         this.velocityX = 0;
     }
 
     jump() {
-        if (this.isFalling) return; // Disable controls if falling
+        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
         if (this.isOnGround) {
             this.velocityY = -this.jumpStrength;
             this.isOnGround = false;
@@ -151,6 +152,9 @@ export class Player {
     }
 
     showGameOver() {
+        if (this.gameOver) return; // Check if the game over screen is already shown
+
+        this.gameOver = true;
         const gameOverText = document.createElement('div');
         gameOverText.innerText = 'GAME OVER';
         gameOverText.style.position = 'absolute';

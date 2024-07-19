@@ -14,6 +14,7 @@ export class Player {
     image: HTMLImageElement;
     aspectRatio: number;
     isMovingLeft: boolean = false;
+    jumpSound: HTMLAudioElement;
 
     constructor() {
         this.image = new Image();
@@ -30,6 +31,8 @@ export class Player {
         };
 
         this.jumpStrength = 18; // Jump height is twice the character height
+
+        this.jumpSound = document.getElementById('jumpSound') as HTMLAudioElement;
 
         window.addEventListener('keydown', (e) => this.onKeyDown(e));
         window.addEventListener('keyup', (e) => this.onKeyUp(e));
@@ -69,6 +72,7 @@ export class Player {
         if (this.isOnGround) {
             this.velocityY = -this.jumpStrength;
             this.isOnGround = false;
+            this.jumpSound.play();
         }
     }
 

@@ -152,14 +152,18 @@ export class Player {
 
     showGameOver() {
         const gameOverText = document.createElement('div');
-        gameOverText.innerText = 'Game Over';
+        gameOverText.innerText = 'GAME OVER';
         gameOverText.style.position = 'absolute';
         gameOverText.style.top = '50%';
         gameOverText.style.left = '50%';
         gameOverText.style.transform = 'translate(-50%, -50%)';
         gameOverText.style.fontSize = '48px';
-        gameOverText.style.color = 'white';
+        gameOverText.style.color = 'black';
         gameOverText.style.fontFamily = 'Press Start 2P, cursive';
+        gameOverText.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+        gameOverText.style.border = '2px solid black';
+        gameOverText.style.padding = '20px';
+        gameOverText.style.textAlign = 'center';
         document.body.appendChild(gameOverText);
     }
 

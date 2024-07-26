@@ -97,7 +97,7 @@ window.onload = () => {
                 player.x = 0;
             }
 
-            level.update(player);
+            level.update(player, screenOffset);
 
             // Pass screenOffset to level.draw
             level.draw(context, screenOffset);

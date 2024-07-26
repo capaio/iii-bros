@@ -44,11 +44,11 @@ export class Level {
         }
     }
 
-    update(player: Player) {
+    update(player: Player, screenOffset: number) {
         // Check if the player falls into the hole
         if (
-            player.x > this.holeX &&
-            player.x + player.width < this.holeX + this.holeWidth &&
+            player.x > this.holeX - screenOffset &&
+            player.x + player.width < this.holeX - screenOffset + this.holeWidth &&
             player.y + player.height >= this.floorHeight
         ) {
             player.fall();
@@ -56,9 +56,10 @@ export class Level {
 
         // Check for beer collection
         this.beerItems = this.beerItems.filter(item => {
+            const adjustedX = item.x - screenOffset;
             if (
-                player.x < item.x + item.width &&
-                player.x + player.width > item.x &&
+                player.x < adjustedX + item.width &&
+                player.x + player.width > adjustedX &&
                 player.y < item.y + item.height &&
                 player.y + player.height > item.y
             ) {

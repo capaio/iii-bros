@@ -1,33 +1,46 @@
 import { Player } from './player';
-import { Obstacle } from './obstacle';
 
 export class Level {
-    obstacles: Obstacle[] = [];
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
+    clouds: { x: number, y: number, width: number, height: number }[] = [];
     holeX: number;
     holeWidth: number;
     floorHeight: number;
+    levelWidth: number;
+    endMarkerX: number;
 
     constructor() {
         this.holeWidth = 100; // Width of the hole
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
-        this.holeX = window.innerWidth - this.holeWidth - 50; // Position of the hole from the right
+        this.levelWidth = 3 * window.innerWidth; // Level length 3x screen width
+        this.holeX = this.levelWidth - this.holeWidth - 100; // Position of the hole from the end
+        this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
-        // Add 5 beer items for testing
+        // Add 5 beer items
         for (let i = 0; i < 5; i++) {
             const beerImage = new Image();
             beerImage.src = 'beer.webp';
             beerImage.onload = () => {
-                const width = beerImage.width * 0.05; // 50% smaller (0.05 is 50% of the 0.1 used earlier)
+                const width = beerImage.width * 0.05; // 50% smaller
                 const height = beerImage.height * 0.05;
                 this.beerItems.push({
-                    x: Math.random() * (window.innerWidth - width),
+                    x: Math.random() * (this.levelWidth - width),
                     y: Math.random() * (this.floorHeight - height - 40), // Ensure it's above the floor
                     width: width,
                     height: height,
                     image: beerImage
                 });
             };
+        }
+
+        // Add clouds
+        for (let i = 0; i < 10; i++) {
+            this.clouds.push({
+                x: Math.random() * this.levelWidth,
+                y: Math.random() * (this.floorHeight / 2),
+                width: 100,
+                height: 50
+            });
         }
     }
 
@@ -57,23 +70,28 @@ export class Level {
         });
     }
 
-    draw(context: CanvasRenderingContext2D) {
+    draw(context: CanvasRenderingContext2D, offsetX: number) {
         // Draw the floor
         context.fillStyle = '#954b0c';
-        context.fillRect(0, this.floorHeight, window.innerWidth, 40);
+        context.fillRect(-offsetX, this.floorHeight, this.levelWidth, 40);
 
         // Draw the hole
         context.fillStyle = 'black';
-        context.fillRect(this.holeX, this.floorHeight, this.holeWidth, 40);
+        context.fillRect(this.holeX - offsetX, this.floorHeight, this.holeWidth, 40);
 
-        // Draw obstacles
-        this.obstacles.forEach(obstacle => {
-            obstacle.draw(context);
-        });
+        // Draw the end marker
+        context.fillStyle = 'green';
+        context.fillRect(this.endMarkerX - offsetX, this.floorHeight - 40, 50, 80);
 
         // Draw beer items
         this.beerItems.forEach(item => {
-            context.drawImage(item.image, item.x, item.y, item.width, item.height);
+            context.drawImage(item.image, item.x - offsetX, item.y, item.width, item.height);
+        });
+
+        // Draw clouds
+        context.fillStyle = 'white';
+        this.clouds.forEach(cloud => {
+            context.fillRect(cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
         });
     }
 }

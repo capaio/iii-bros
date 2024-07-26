@@ -1,5 +1,3 @@
-import { Obstacle } from './obstacle';
-
 export class Player {
     x: number;
     y: number;
@@ -93,7 +91,7 @@ export class Player {
         this.isOnGround = false;
     }
 
-    update(obstacles: Obstacle[]) {
+    update(levelWidth: number) {
         if (this.isFalling) {
             this.y += this.velocityY;
             this.velocityY += this.gravity;
@@ -123,32 +121,16 @@ export class Player {
             this.isOnGround = true;
         }
 
-        this.checkCollisions(obstacles);
-    }
+        // Ensure player does not go beyond the right edge of the level
+        if (this.x > levelWidth - this.width) {
+            this.x = levelWidth - this.width;
+        }
 
-    checkCollisions(obstacles: Obstacle[]) {
-        obstacles.forEach(obstacle => {
-            if (this.x < obstacle.x + obstacle.width &&
-                this.x + this.width > obstacle.x &&
-                this.y < obstacle.y + obstacle.height &&
-                this.y + this.height > obstacle.y) {
-
-                if (this.velocityY > 0 && this.y + this.height - this.velocityY <= obstacle.y) {
-                    // Landed on top of obstacle
-                    this.y = obstacle.y - this.height;
-                    this.velocityY = 0;
-                    this.isOnGround = true;
-                } else {
-                    // Horizontal collision
-                    if (this.velocityX > 0) {
-                        this.x = obstacle.x - this.width;
-                    } else if (this.velocityX < 0) {
-                        this.x = obstacle.x + obstacle.width;
-                    }
-                    this.velocityX = 0;
-                }
-            }
-        });
+        // Ensure player does not go beyond 40% of the screen width
+        const maxPlayerX = 0.4 * window.innerWidth;
+        if (this.x > maxPlayerX) {
+            this.x = maxPlayerX;
+        }
     }
 
     showGameOver() {

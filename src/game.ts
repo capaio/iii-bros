@@ -18,6 +18,7 @@ window.onload = () => {
 
     let isMusicPlaying = false;
     let currentScreen = 'splash'; // Possible values: 'splash', 'game'
+    let screenOffset = 0;
 
     splashMusic.play();
 
@@ -70,14 +71,36 @@ window.onload = () => {
         const player = new Player();
         const level = new Level();
         let score = 0;
+        let isMovingLeft = false;
+        let isMovingRight = false;
 
         const gameLoop = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            level.update(player);
-            player.update(level.obstacles);
+            // Adjust offset based on movement direction
+            if (isMovingRight) {
+                screenOffset += player.speed;
+            } else if (isMovingLeft) {
+                screenOffset -= player.speed;
+            }
 
-            level.draw(context);
+            // Ensure the screen offset does not go negative
+            if (screenOffset < 0) {
+                screenOffset = 0;
+            }
+
+            // Update the player's position
+            player.update(level.levelWidth);
+
+            // Ensure the player does not go back behind position 0
+            if (player.x < 0) {
+                player.x = 0;
+            }
+
+            level.update(player);
+
+            // Pass screenOffset to level.draw
+            level.draw(context, screenOffset);
             player.draw(context);
 
             // Update and draw score
@@ -90,30 +113,38 @@ window.onload = () => {
         canvas.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
             if (touch.clientX < canvas.width / 2) {
+                isMovingLeft = true;
                 player.moveLeft();
             } else {
+                isMovingRight = true;
                 player.moveRight();
             }
         });
 
         canvas.addEventListener('touchend', () => {
+            isMovingLeft = false;
+            isMovingRight = false;
             player.stop();
         });
 
         // Button controls
         leftButton.addEventListener('touchstart', () => {
+            isMovingLeft = true;
             player.moveLeft();
         });
 
         leftButton.addEventListener('touchend', () => {
+            isMovingLeft = false;
             player.stop();
         });
 
         rightButton.addEventListener('touchstart', () => {
+            isMovingRight = true;
             player.moveRight();
         });
 
         rightButton.addEventListener('touchend', () => {
+            isMovingRight = false;
             player.stop();
         });
 

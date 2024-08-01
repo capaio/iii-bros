@@ -15,7 +15,7 @@ export class Level {
     constructor() {
         this.holeWidth = 100; // Width of the hole
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
-        this.levelWidth = 3 * window.innerWidth; // Level length 3x screen width
+        this.levelWidth = 10 * window.innerWidth; // Level length 10x screen width
         this.holeX = this.levelWidth - this.holeWidth - 100; // Position of the hole from the end
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
@@ -25,7 +25,7 @@ export class Level {
         this.bushImage = new Image();
         this.bushImage.src = 'bush.png';
 
-        // Add 5 beer items
+        // Add 15 beer items
         for (let i = 0; i < 15; i++) {
             const beerImage = new Image();
             beerImage.src = 'beer.png';
@@ -42,7 +42,7 @@ export class Level {
             };
         }
 
-        // Add clouds
+        // Add 20 clouds
         for (let i = 0; i < 20; i++) {
             this.clouds.push({
                 x: Math.random() * this.levelWidth,
@@ -52,7 +52,7 @@ export class Level {
             });
         }
 
-        // Add bushes
+        // Add 15 bushes
         this.bushImage.onload = () => {
             for (let i = 0; i < 15; i++) {
                 const width = this.bushImage.width * 0.1; // Adjust size as needed
@@ -66,8 +66,6 @@ export class Level {
                 });
             }
         };
-        console.log('a')
-
     }
 
     update(player: Player, screenOffset: number) {

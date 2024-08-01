@@ -2,13 +2,15 @@ import { Player } from './player';
 
 export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
-    clouds: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
+    clouds: { x: number, y: number, width: number, height: number }[] = [];
+    bushes: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
     holeX: number;
     holeWidth: number;
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
     cloudImage: HTMLImageElement;
+    bushImage: HTMLImageElement;
 
     constructor() {
         this.holeWidth = 100; // Width of the hole
@@ -20,8 +22,11 @@ export class Level {
         this.cloudImage = new Image();
         this.cloudImage.src = 'cloud.png';
 
+        this.bushImage = new Image();
+        this.bushImage.src = 'bush.png';
+
         // Add 5 beer items
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 15; i++) {
             const beerImage = new Image();
             beerImage.src = 'beer.png';
             beerImage.onload = () => {
@@ -38,15 +43,31 @@ export class Level {
         }
 
         // Add clouds
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             this.clouds.push({
                 x: Math.random() * this.levelWidth,
                 y: Math.random() * (this.floorHeight / 2),
                 width: 100,
-                height: 50,
-                image: this.cloudImage
+                height: 50
             });
         }
+
+        // Add bushes
+        this.bushImage.onload = () => {
+            for (let i = 0; i < 15; i++) {
+                const width = this.bushImage.width * 0.1; // Adjust size as needed
+                const height = this.bushImage.height * 0.1;
+                this.bushes.push({
+                    x: Math.random() * this.levelWidth,
+                    y: this.floorHeight - height, // Place on the floor
+                    width: width,
+                    height: height,
+                    image: this.bushImage
+                });
+            }
+        };
+        console.log('a')
+
     }
 
     update(player: Player, screenOffset: number) {
@@ -96,7 +117,12 @@ export class Level {
 
         // Draw clouds
         this.clouds.forEach(cloud => {
-            context.drawImage(cloud.image, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
+            context.drawImage(this.cloudImage, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
+        });
+
+        // Draw bushes
+        this.bushes.forEach(bush => {
+            context.drawImage(bush.image, bush.x - offsetX, bush.y, bush.width, bush.height);
         });
     }
 }

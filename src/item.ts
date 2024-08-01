@@ -5,7 +5,7 @@ export class Item {
     height: number;
     image: HTMLImageElement;
 
-    constructor(x: number, y: number, imagePath: string = 'beer.webp') {
+    constructor(x: number, y: number, imagePath: string = 'beer.png') {
         this.width = 0.05 * window.innerWidth; // Scale width based on window size
         this.height = 0.05 * window.innerWidth; // Scale height based on window size
         this.x = x;

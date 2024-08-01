@@ -2,12 +2,13 @@ import { Player } from './player';
 
 export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
-    clouds: { x: number, y: number, width: number, height: number }[] = [];
+    clouds: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
     holeX: number;
     holeWidth: number;
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
+    cloudImage: HTMLImageElement;
 
     constructor() {
         this.holeWidth = 100; // Width of the hole
@@ -16,10 +17,13 @@ export class Level {
         this.holeX = this.levelWidth - this.holeWidth - 100; // Position of the hole from the end
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
+        this.cloudImage = new Image();
+        this.cloudImage.src = 'cloud.png';
+
         // Add 5 beer items
         for (let i = 0; i < 5; i++) {
             const beerImage = new Image();
-            beerImage.src = 'beer.webp';
+            beerImage.src = 'beer.png';
             beerImage.onload = () => {
                 const width = beerImage.width * 0.05; // 50% smaller
                 const height = beerImage.height * 0.05;
@@ -39,7 +43,8 @@ export class Level {
                 x: Math.random() * this.levelWidth,
                 y: Math.random() * (this.floorHeight / 2),
                 width: 100,
-                height: 50
+                height: 50,
+                image: this.cloudImage
             });
         }
     }
@@ -90,9 +95,8 @@ export class Level {
         });
 
         // Draw clouds
-        context.fillStyle = 'white';
         this.clouds.forEach(cloud => {
-            context.fillRect(cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
+            context.drawImage(cloud.image, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
         });
     }
 }

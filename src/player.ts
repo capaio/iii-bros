@@ -19,7 +19,7 @@ export class Player {
 
     constructor() {
         this.image = new Image();
-        this.image.src = 'iii.webp';
+        this.image.src = 'iii.png';
         this.x = 0.05 * window.innerWidth; // Spawn 5% from the left
         this.y = 0;
         this.width = 0;

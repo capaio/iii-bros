@@ -77,14 +77,18 @@ window.onload = () => {
         const gameLoop = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
+            const maxScreenOffset = level.endMarkerX - canvas.width;
+
             // Adjust offset based on movement direction
             if (isMovingRight) {
                 screenOffset += player.speed;
             }
 
-            // Ensure the screen offset does not go negative
+            // Ensure the screen offset does not go negative or beyond the end marker
             if (screenOffset < 0) {
                 screenOffset = 0;
+            } else if (screenOffset > maxScreenOffset) {
+                screenOffset = maxScreenOffset;
             }
 
             // Update the player's position

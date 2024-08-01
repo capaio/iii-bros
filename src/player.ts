@@ -15,6 +15,7 @@ export class Player {
     jumpSound: HTMLAudioElement;
     isFalling: boolean = false;
     gameOver: boolean = false;
+    maxX: number; // New property to handle the maximum X position dynamically
 
     constructor() {
         this.image = new Image();
@@ -31,8 +32,8 @@ export class Player {
         };
 
         this.jumpStrength = 18; // Jump height is twice the character height
-
         this.jumpSound = document.getElementById('jumpSound') as HTMLAudioElement;
+        this.maxX = 0.4 * window.innerWidth; // Initially, the player can move up to 40% of the screen width
 
         window.addEventListener('keydown', (e) => this.onKeyDown(e));
         window.addEventListener('keyup', (e) => this.onKeyUp(e));
@@ -126,10 +127,9 @@ export class Player {
             this.x = levelWidth - this.width;
         }
 
-        // Ensure player does not go beyond 40% of the screen width
-        const maxPlayerX = 0.4 * window.innerWidth;
-        if (this.x > maxPlayerX) {
-            this.x = maxPlayerX;
+        // Ensure player does not go beyond maxX
+        if (this.x > this.maxX) {
+            this.x = this.maxX;
         }
     }
 

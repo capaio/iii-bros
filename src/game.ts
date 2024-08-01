@@ -80,7 +80,7 @@ window.onload = () => {
             const maxScreenOffset = level.endMarkerX - canvas.width;
 
             // Adjust offset based on movement direction
-            if (isMovingRight) {
+            if (isMovingRight && screenOffset < maxScreenOffset) {
                 screenOffset += player.speed;
             }
 
@@ -89,6 +89,13 @@ window.onload = () => {
                 screenOffset = 0;
             } else if (screenOffset > maxScreenOffset) {
                 screenOffset = maxScreenOffset;
+            }
+
+            // Adjust player's maxX based on the screenOffset
+            if (screenOffset >= maxScreenOffset) {
+                player.maxX = 0.7 * canvas.width;
+            } else {
+                player.maxX = 0.4 * canvas.width;
             }
 
             // Update the player's position

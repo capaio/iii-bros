@@ -4,6 +4,7 @@ export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
     clouds: { x: number, y: number, width: number, height: number }[] = [];
     bushes: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
+    enemies: { x: number, y: number, width: number, height: number, image: HTMLImageElement, speed: number }[] = [];
     holeX: number;
     holeWidth: number;
     floorHeight: number;
@@ -11,6 +12,8 @@ export class Level {
     endMarkerX: number;
     cloudImage: HTMLImageElement;
     bushImage: HTMLImageElement;
+    enemyImage: HTMLImageElement;
+    gameOver: boolean;
 
     constructor() {
         this.holeWidth = 100; // Width of the hole
@@ -24,6 +27,11 @@ export class Level {
 
         this.bushImage = new Image();
         this.bushImage.src = 'bush.png';
+
+        this.enemyImage = new Image();
+        this.enemyImage.src = 'enemy.png';
+
+        this.gameOver = false;
 
         // Add 15 beer items
         for (let i = 0; i < 15; i++) {
@@ -66,9 +74,29 @@ export class Level {
                 });
             }
         };
+
+        // Add 5 enemies
+        this.enemyImage.onload = () => {
+            for (let i = 0; i < 5; i++) {
+                const width = this.enemyImage.width * 0.1; // Adjust size as needed
+                const height = this.enemyImage.height * 0.1;
+                this.enemies.push({
+                    x: window.innerWidth + Math.random(), // Spawn just outside the level on the right
+                    y: this.floorHeight - height, // Place on the floor
+                    width: width,
+                    height: height,
+                    image: this.enemyImage,
+                    speed: 4 // Adjust speed as needed
+                });
+            }
+        };
     }
 
     update(player: Player, screenOffset: number) {
+        if (this.gameOver) {
+            return; // Do not update anything if the game is over
+        }
+
         // Check if the player falls into the hole
         if (
             player.x > this.holeX - screenOffset &&
@@ -93,6 +121,26 @@ export class Level {
             }
             return true; // Keep the item
         });
+
+        // Update enemy positions and check for collisions with the player
+        this.enemies.forEach(enemy => {
+            enemy.x -= enemy.speed; // Move enemy left
+
+            const adjustedX = enemy.x - screenOffset;
+            if (
+                player.x < adjustedX + enemy.width &&
+                player.x + player.width > adjustedX &&
+                player.y < enemy.y + enemy.height &&
+                player.y + player.height > enemy.y
+            ) {
+                // Player touches enemy
+                player.showGameOver();
+                this.gameOver = true; // Set game over flag
+            }
+        });
+
+        // Remove enemies that have gone off the left side of the screen
+        this.enemies = this.enemies.filter(enemy => enemy.x + enemy.width > screenOffset);
     }
 
     draw(context: CanvasRenderingContext2D, offsetX: number) {
@@ -121,6 +169,11 @@ export class Level {
         // Draw bushes
         this.bushes.forEach(bush => {
             context.drawImage(bush.image, bush.x - offsetX, bush.y, bush.width, bush.height);
+        });
+
+        // Draw enemies
+        this.enemies.forEach(enemy => {
+            context.drawImage(enemy.image, enemy.x - offsetX, enemy.y, enemy.width, enemy.height);
         });
     }
 }

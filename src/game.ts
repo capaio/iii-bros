@@ -80,8 +80,6 @@ window.onload = () => {
             // Adjust offset based on movement direction
             if (isMovingRight) {
                 screenOffset += player.speed;
-            } else if (isMovingLeft) {
-                screenOffset -= player.speed;
             }
 
             // Ensure the screen offset does not go negative

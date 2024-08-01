@@ -15,11 +15,25 @@ window.onload = () => {
     const rightButton = document.getElementById('rightButton') as HTMLButtonElement;
     const jumpButton = document.getElementById('jumpButton') as HTMLButtonElement;
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const timerDisplay = document.createElement('div');
+    document.body.appendChild(timerDisplay);
+
+    timerDisplay.style.position = 'absolute';
+    timerDisplay.style.top = '20px';
+    timerDisplay.style.left = '50%';
+    timerDisplay.style.transform = 'translateX(-50%)';
+    timerDisplay.style.fontSize = '24px';
+    timerDisplay.style.fontFamily = '"Press Start 2P", cursive';
+    timerDisplay.style.color = 'black';
+    timerDisplay.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+    timerDisplay.style.border = '2px solid black';
+    timerDisplay.style.padding = '10px';
 
     let isMusicPlaying = false;
     let currentScreen = 'splash'; // Possible values: 'splash', 'game'
     let screenOffset = 0;
     let gameOver = false;
+    let timeLeft = 50; // 10 seconds timer
 
     splashMusic.play();
 
@@ -121,6 +135,19 @@ window.onload = () => {
             requestAnimationFrame(gameLoop);
         };
 
+        const updateTimer = () => {
+            if (!gameOver) {
+                timeLeft -= 1;
+                timerDisplay.textContent = `Time: ${timeLeft}`;
+                if (timeLeft <= 0) {
+                    gameOver = true;
+                    player.showGameOver();
+                } else {
+                    setTimeout(updateTimer, 1000);
+                }
+            }
+        };
+
         // Touch controls for canvas
         canvas.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
@@ -177,5 +204,6 @@ window.onload = () => {
         });
 
         gameLoop();
+        updateTimer();
     };
 };

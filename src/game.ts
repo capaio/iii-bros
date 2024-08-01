@@ -19,6 +19,7 @@ window.onload = () => {
     let isMusicPlaying = false;
     let currentScreen = 'splash'; // Possible values: 'splash', 'game'
     let screenOffset = 0;
+    let gameOver = false;
 
     splashMusic.play();
 
@@ -77,36 +78,38 @@ window.onload = () => {
         const gameLoop = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            const maxScreenOffset = level.endMarkerX - canvas.width;
+            if (!gameOver) {
+                const maxScreenOffset = level.endMarkerX - canvas.width;
 
-            // Adjust offset based on movement direction
-            if (isMovingRight && screenOffset < maxScreenOffset) {
-                screenOffset += player.speed;
+                // Adjust offset based on movement direction
+                if (isMovingRight && screenOffset < maxScreenOffset) {
+                    screenOffset += player.speed;
+                }
+
+                // Ensure the screen offset does not go negative or beyond the end marker
+                if (screenOffset < 0) {
+                    screenOffset = 0;
+                } else if (screenOffset > maxScreenOffset) {
+                    screenOffset = maxScreenOffset;
+                }
+
+                // Adjust player's maxX based on the screenOffset
+                if (screenOffset >= maxScreenOffset) {
+                    player.maxX = 0.7 * canvas.width;
+                } else {
+                    player.maxX = 0.4 * canvas.width;
+                }
+
+                // Update the player's position
+                player.update(level.levelWidth);
+
+                // Ensure the player does not go back behind position 0
+                if (player.x < 0) {
+                    player.x = 0;
+                }
+
+                level.update(player, screenOffset);
             }
-
-            // Ensure the screen offset does not go negative or beyond the end marker
-            if (screenOffset < 0) {
-                screenOffset = 0;
-            } else if (screenOffset > maxScreenOffset) {
-                screenOffset = maxScreenOffset;
-            }
-
-            // Adjust player's maxX based on the screenOffset
-            if (screenOffset >= maxScreenOffset) {
-                player.maxX = 0.7 * canvas.width;
-            } else {
-                player.maxX = 0.4 * canvas.width;
-            }
-
-            // Update the player's position
-            player.update(level.levelWidth);
-
-            // Ensure the player does not go back behind position 0
-            if (player.x < 0) {
-                player.x = 0;
-            }
-
-            level.update(player, screenOffset);
 
             // Pass screenOffset to level.draw
             level.draw(context, screenOffset);
@@ -166,6 +169,11 @@ window.onload = () => {
             score += 1;
             const collectSound = new Audio(collectSoundSrc);
             collectSound.play();
+        });
+
+        // Listen for game over event
+        window.addEventListener('gameOver', () => {
+            gameOver = true;
         });
 
         gameLoop();

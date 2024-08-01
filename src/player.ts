@@ -32,7 +32,9 @@ export class Player {
         };
 
         this.jumpStrength = 18; // Jump height is twice the character height
+
         this.jumpSound = document.getElementById('jumpSound') as HTMLAudioElement;
+
         this.maxX = 0.4 * window.innerWidth; // Initially, the player can move up to 40% of the screen width
 
         window.addEventListener('keydown', (e) => this.onKeyDown(e));
@@ -143,9 +145,9 @@ export class Player {
         gameOverText.style.top = '50%';
         gameOverText.style.left = '50%';
         gameOverText.style.transform = 'translate(-50%, -50%)';
-        gameOverText.style.fontSize = '48px';
+        gameOverText.style.fontSize = '42px';
         gameOverText.style.color = 'black';
-        gameOverText.style.fontFamily = 'Press Start 2P, cursive';
+        gameOverText.style.fontFamily = '"Press Start 2P", cursive';
         gameOverText.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
         gameOverText.style.border = '2px solid black';
         gameOverText.style.padding = '20px';
@@ -160,13 +162,15 @@ export class Player {
         restartButton.style.backgroundColor = 'black';
         restartButton.style.color = 'white';
         restartButton.style.border = '2px solid white';
-        restartButton.style.fontFamily = 'Press Start 2P, cursive';
+        restartButton.style.fontFamily = '"Press Start 2P", cursive';
         restartButton.onclick = () => {
             window.location.reload();
         };
 
         gameOverText.appendChild(restartButton);
         document.body.appendChild(gameOverText);
+
+        window.dispatchEvent(new Event('gameOver'));
     }
 
     draw(context: CanvasRenderingContext2D) {

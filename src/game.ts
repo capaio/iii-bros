@@ -1,5 +1,6 @@
 import { Player } from './player';
 import { Level } from './level';
+import {Firework} from "./firework";
 
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -136,11 +137,23 @@ window.onload = () => {
             level.draw(context, screenOffset);
             player.draw(context);
 
+            // Draw fireworks if victory
+            if (victory) {
+                for (const firework of fireworks) {
+                    firework.update();
+                    firework.draw(context);
+                }
+
+                // Remove dead fireworks
+                fireworks = fireworks.filter(firework => firework.isAlive());
+            }
+
             // Update and draw score
             scoreDisplay.textContent = score.toString().padStart(3, '0');
 
             requestAnimationFrame(gameLoop);
         };
+
 
         const updateTimer = () => {
             if (!gameOver && !victory) {
@@ -155,6 +168,7 @@ window.onload = () => {
             }
         };
 
+        let fireworks: Firework[] = [];
         const showVictoryScreen = () => {
             const victoryText = document.createElement('div');
             victoryText.innerText = 'VICTORY';
@@ -177,6 +191,11 @@ window.onload = () => {
             victoryText.appendChild(codeText);
 
             document.body.appendChild(victoryText);
+
+            // Create fireworks
+            for (let i = 0; i < 100; i++) {
+                fireworks.push(new Firework(canvas.width / 2, canvas.height / 2));
+            }
 
             window.dispatchEvent(new Event('victory'));
         };

@@ -12,6 +12,7 @@ window.onload = () => {
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
     const collectSoundSrc = 'coin.wav';
+    const fireworkSoundSrc = 'firework.wav'; // Firework sound source
     const leftButton = document.getElementById('leftButton') as HTMLButtonElement;
     const rightButton = document.getElementById('rightButton') as HTMLButtonElement;
     const jumpButton = document.getElementById('jumpButton') as HTMLButtonElement;
@@ -198,11 +199,20 @@ window.onload = () => {
             window.dispatchEvent(new Event('victory'));
         };
 
+        let counFireworksSound = 0
+
         const createFirework = () => {
+            counFireworksSound += 1
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
             for (let i = 0; i < 100; i++) {
                 fireworks.push(new Firework(x, y));
+            }
+
+            // Play firework sound
+            if(counFireworksSound < 10) {
+                const fireworkSound = new Audio(fireworkSoundSrc);
+                fireworkSound.play();
             }
 
             // Schedule the next firework

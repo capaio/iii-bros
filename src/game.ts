@@ -1,6 +1,6 @@
 import { Player } from './player';
 import { Level } from './level';
-import {Firework} from "./firework";
+import { Firework } from './firework';
 
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -192,12 +192,22 @@ window.onload = () => {
 
             document.body.appendChild(victoryText);
 
-            // Create fireworks
-            for (let i = 0; i < 100; i++) {
-                fireworks.push(new Firework(canvas.width / 2, canvas.height / 2));
-            }
+            // Create initial fireworks
+            createFirework();
 
             window.dispatchEvent(new Event('victory'));
+        };
+
+        const createFirework = () => {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            for (let i = 0; i < 100; i++) {
+                fireworks.push(new Firework(x, y));
+            }
+
+            // Schedule the next firework
+            const nextFireworkTime = Math.random() * 400 + 100; // Random time between 0.1 and 0.5 seconds
+            setTimeout(createFirework, nextFireworkTime);
         };
 
         // Touch controls for canvas

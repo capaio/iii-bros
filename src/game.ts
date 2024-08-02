@@ -11,6 +11,7 @@ window.onload = () => {
     const scoreDisplay = document.getElementById('score') as HTMLDivElement;
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
+    const victorySound = new Audio('victory.mp3');
     const collectSoundSrc = 'coin.wav';
     const fireworkSoundSrc = 'firework.wav'; // Firework sound source
     const leftButton = document.getElementById('leftButton') as HTMLButtonElement;
@@ -155,7 +156,6 @@ window.onload = () => {
             requestAnimationFrame(gameLoop);
         };
 
-
         const updateTimer = () => {
             if (!gameOver && !victory) {
                 timeLeft -= 1;
@@ -192,6 +192,11 @@ window.onload = () => {
             victoryText.appendChild(codeText);
 
             document.body.appendChild(victoryText);
+
+            // Stop all other music and play victory sound
+            splashMusic.pause();
+            gameMusic.pause();
+            victorySound.play();
 
             // Create initial fireworks
             createFirework();

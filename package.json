@@ -1,14 +1,14 @@
 {
   "name": "super-iii-bros",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carlo Cappai",
+  "homepage": "https://capaio.github.io/iii-bros",
   "license": "ISC",
   "description": "",
   "devDependencies": {

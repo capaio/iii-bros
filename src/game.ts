@@ -33,6 +33,7 @@ window.onload = () => {
     let currentScreen = 'splash'; // Possible values: 'splash', 'game'
     let screenOffset = 0;
     let gameOver = false;
+    let victory = false;
     let timeLeft = 50; // 10 seconds timer
 
     splashMusic.play();
@@ -92,7 +93,7 @@ window.onload = () => {
         const gameLoop = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (!gameOver) {
+            if (!gameOver && !victory) {
                 const maxScreenOffset = level.endMarkerX - canvas.width;
 
                 // Adjust offset based on movement direction
@@ -123,6 +124,12 @@ window.onload = () => {
                 }
 
                 level.update(player, screenOffset);
+
+                // Check for victory condition
+                if (screenOffset >= maxScreenOffset && player.x >= player.maxX) {
+                    victory = true;
+                    showVictoryScreen();
+                }
             }
 
             // Pass screenOffset to level.draw
@@ -136,7 +143,7 @@ window.onload = () => {
         };
 
         const updateTimer = () => {
-            if (!gameOver) {
+            if (!gameOver && !victory) {
                 timeLeft -= 1;
                 timerDisplay.textContent = `Time: ${timeLeft}`;
                 if (timeLeft <= 0) {
@@ -146,6 +153,32 @@ window.onload = () => {
                     setTimeout(updateTimer, 1000);
                 }
             }
+        };
+
+        const showVictoryScreen = () => {
+            const victoryText = document.createElement('div');
+            victoryText.innerText = 'VICTORY';
+            victoryText.style.position = 'absolute';
+            victoryText.style.top = '50%';
+            victoryText.style.left = '50%';
+            victoryText.style.transform = 'translate(-50%, -50%)';
+            victoryText.style.fontSize = '48px';
+            victoryText.style.color = 'black';
+            victoryText.style.fontFamily = '"Press Start 2P", cursive';
+            victoryText.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            victoryText.style.border = '2px solid black';
+            victoryText.style.padding = '20px';
+            victoryText.style.textAlign = 'center';
+
+            const codeText = document.createElement('div');
+            codeText.innerText = 'Your code is 268';
+            codeText.style.fontSize = '24px';
+            codeText.style.marginTop = '10px';
+            victoryText.appendChild(codeText);
+
+            document.body.appendChild(victoryText);
+
+            window.dispatchEvent(new Event('victory'));
         };
 
         // Touch controls for canvas
@@ -201,6 +234,11 @@ window.onload = () => {
         // Listen for game over event
         window.addEventListener('gameOver', () => {
             gameOver = true;
+        });
+
+        // Listen for victory event
+        window.addEventListener('victory', () => {
+            victory = true;
         });
 
         gameLoop();

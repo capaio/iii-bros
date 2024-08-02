@@ -42,6 +42,7 @@ window.onload = () => {
     splashMusic.play();
 
     playButton.addEventListener('click', () => {
+        requestFullscreen(); // Request full screen mode on play button click
         splashScreen.style.display = 'none';
         canvas.style.display = 'block';
         scoreDisplay.style.display = 'block';
@@ -82,6 +83,13 @@ window.onload = () => {
         }
         isMusicPlaying = !isMusicPlaying;
     });
+
+    const requestFullscreen = () => {
+        const element = document.documentElement; // Fullscreen the entire document
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        }
+    };
 
     const startGame = () => {
         canvas.width = window.innerWidth;
@@ -204,10 +212,7 @@ window.onload = () => {
             window.dispatchEvent(new Event('victory'));
         };
 
-        let counFireworksSound = 0
-
         const createFirework = () => {
-            counFireworksSound += 1
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
             for (let i = 0; i < 100; i++) {
@@ -215,10 +220,8 @@ window.onload = () => {
             }
 
             // Play firework sound
-            if(counFireworksSound < 10) {
-                const fireworkSound = new Audio(fireworkSoundSrc);
-                fireworkSound.play();
-            }
+            const fireworkSound = new Audio(fireworkSoundSrc);
+            fireworkSound.play();
 
             // Schedule the next firework
             const nextFireworkTime = Math.random() * 400 + 100; // Random time between 0.1 and 0.5 seconds

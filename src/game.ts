@@ -212,7 +212,10 @@ window.onload = () => {
             window.dispatchEvent(new Event('victory'));
         };
 
+        let countFireworksSound = 0
+
         const createFirework = () => {
+            countFireworksSound += 1
             const x = Math.random() * canvas.width;
             const y = Math.random() * canvas.height;
             for (let i = 0; i < 100; i++) {
@@ -220,8 +223,10 @@ window.onload = () => {
             }
 
             // Play firework sound
-            const fireworkSound = new Audio(fireworkSoundSrc);
-            fireworkSound.play();
+            if(countFireworksSound < 10) {
+                const fireworkSound = new Audio(fireworkSoundSrc);
+                fireworkSound.play();
+            }
 
             // Schedule the next firework
             const nextFireworkTime = Math.random() * 400 + 100; // Random time between 0.1 and 0.5 seconds

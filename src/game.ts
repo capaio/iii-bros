@@ -42,7 +42,6 @@ window.onload = () => {
     splashMusic.play();
 
     playButton.addEventListener('click', () => {
-        requestFullscreen(); // Request full screen mode on play button click
         splashScreen.style.display = 'none';
         canvas.style.display = 'block';
         scoreDisplay.style.display = 'block';
@@ -83,13 +82,6 @@ window.onload = () => {
         }
         isMusicPlaying = !isMusicPlaying;
     });
-
-    const requestFullscreen = () => {
-        const element = document.documentElement; // Fullscreen the entire document
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        }
-    };
 
     const startGame = () => {
         canvas.width = window.innerWidth;

@@ -79,8 +79,8 @@ export class PlatformsManager {
                 player.velocityY < 0 && // Moving up
                 player.x + player.width > adjustedX && // Player's right side is past platform's left side
                 player.x < adjustedX + platform.width && // Player's left side is before platform's right side
-                player.y < platform.y + platform.height && // Player's head is below the platform's bottom
-                player.y - player.velocityY >= platform.y + platform.height // Player's head was above the platform's bottom
+                player.y <= platform.y + platform.height && // Player's head is below the platform's bottom edge
+                player.y > platform.y // Player's head is above the platform's top edge (meaning within the platform's height)
             ) {
                 // Collide with the bottom
                 player.y = platform.y + platform.height;

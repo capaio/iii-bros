@@ -1,10 +1,11 @@
 import { Player } from './player';
+import { EnemiesManager } from './enemies';
+import { PlatformsManager } from './platform';
 
 export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
     clouds: { x: number, y: number, width: number, height: number }[] = [];
     bushes: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
-    enemies: { x: number, y: number, width: number, height: number, image: HTMLImageElement, speed: number }[] = [];
     holeX: number;
     holeWidth: number;
     floorHeight: number;
@@ -12,8 +13,9 @@ export class Level {
     endMarkerX: number;
     cloudImage: HTMLImageElement;
     bushImage: HTMLImageElement;
-    enemyImage: HTMLImageElement;
     gameOver: boolean;
+    enemiesManager: EnemiesManager;
+    platformsManager: PlatformsManager;
 
     constructor() {
         this.holeWidth = 100; // Width of the hole
@@ -28,10 +30,11 @@ export class Level {
         this.bushImage = new Image();
         this.bushImage.src = 'bush.png';
 
-        this.enemyImage = new Image();
-        this.enemyImage.src = 'enemy.png';
-
         this.gameOver = false;
+
+        // Initialize enemies and platforms managers
+        this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
+        this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
 
         // Add 15 beer items
         for (let i = 0; i < 15; i++) {
@@ -74,28 +77,13 @@ export class Level {
                 });
             }
         };
-
-        // Add 5 enemies
-        this.enemyImage.onload = () => {
-            for (let i = 0; i < 5; i++) {
-                const width = this.enemyImage.width * 0.1; // Adjust size as needed
-                const height = this.enemyImage.height * 0.1;
-                this.enemies.push({
-                    x: window.innerWidth + Math.random(), // Spawn just outside the level on the right
-                    y: this.floorHeight - height, // Place on the floor
-                    width: width,
-                    height: height,
-                    image: this.enemyImage,
-                    speed: 4 // Adjust speed as needed
-                });
-            }
-        };
     }
 
     update(player: Player, screenOffset: number) {
-        if (this.gameOver) {
-            return; // Do not update anything if the game is over
-        }
+        if (this.gameOver) return;
+
+        this.enemiesManager.update(player, screenOffset);
+        this.platformsManager.update(player, screenOffset);
 
         // Check if the player falls into the hole
         if (
@@ -121,26 +109,6 @@ export class Level {
             }
             return true; // Keep the item
         });
-
-        // Update enemy positions and check for collisions with the player
-        this.enemies.forEach(enemy => {
-            enemy.x -= enemy.speed; // Move enemy left
-
-            const adjustedX = enemy.x - screenOffset;
-            if (
-                player.x < adjustedX + enemy.width &&
-                player.x + player.width > adjustedX &&
-                player.y < enemy.y + enemy.height &&
-                player.y + player.height > enemy.y
-            ) {
-                // Player touches enemy
-                player.showGameOver();
-                this.gameOver = true; // Set game over flag
-            }
-        });
-
-        // Remove enemies that have gone off the left side of the screen
-        this.enemies = this.enemies.filter(enemy => enemy.x + enemy.width > screenOffset);
     }
 
     draw(context: CanvasRenderingContext2D, offsetX: number) {
@@ -155,6 +123,9 @@ export class Level {
         // Draw the end marker
         context.fillStyle = 'green';
         context.fillRect(this.endMarkerX - offsetX, this.floorHeight - 40, 50, 80);
+
+        // Draw platforms
+        this.platformsManager.draw(context, offsetX);
 
         // Draw beer items
         this.beerItems.forEach(item => {
@@ -172,8 +143,6 @@ export class Level {
         });
 
         // Draw enemies
-        this.enemies.forEach(enemy => {
-            context.drawImage(enemy.image, enemy.x - offsetX, enemy.y, enemy.width, enemy.height);
-        });
+        this.enemiesManager.draw(context, offsetX);
     }
 }

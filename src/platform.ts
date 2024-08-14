@@ -51,14 +51,14 @@ export class PlatformsManager {
             // Check if the player hits the left side of the platform
             if (
                 player.velocityX > 0 && // Moving right
-                player.x + player.width > adjustedX && // Player's right side touches platform's left side
-                player.x + player.width - player.velocityX <= adjustedX && // Player's right side was to the left of platform's left side
-                player.y + player.height > platform.y && // Player is not above the platform
-                player.y < platform.y + platform.height // Player is not below the platform
+                player.x + player.width > adjustedX && // Player's right side is to the right of the platform's left side
+                player.x < adjustedX + platform.width && // Player's left side is to the left of the platform's right side
+                player.y + player.height > platform.y && // Player's bottom is below the platform's top
+                player.y < platform.y + platform.height // Player's top is above the platform's bottom
             ) {
                 // Collide with the left side
-                player.x = adjustedX - player.width;
-                player.velocityX = 0;
+                player.x = adjustedX - player.width; // Set player position to the left edge of the platform
+                player.velocityX = 0; // Stop the player's horizontal movement
             }
 
             // Check if the player hits the right side of the platform
@@ -169,7 +169,7 @@ export class PlatformsManager {
         this.upwardStaircase(4, 0.03 * this.levelWidth)
         let start = 0.03 * this.levelWidth + 5 * this.moduleWidth
         this.hole(start, 100)
-        this.downwardStaircase(5, start + 100)
+        this.downwardStaircase(4, start + 100)
         this.platform(4, 0.15 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight))
     }
 

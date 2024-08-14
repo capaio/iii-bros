@@ -49,6 +49,7 @@ module.exports = {
                 { from: './splash-music.mp3', to: 'splash-music.mp3' },
                 { from: './victory.mp3', to: 'victory.mp3' },
                 { from: './game-music.mp3', to: 'game-music.mp3' },
+                { from: './gameover.mp3', to: 'gameover.mp3' },
                 { from: './_config.yml', to: '_config.yml' },
             ],
         }),

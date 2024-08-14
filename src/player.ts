@@ -16,6 +16,7 @@ export class Player {
     isFalling: boolean = false;
     gameOver: boolean = false;
     maxX: number; // New property to handle the maximum X position dynamically
+    gameOverSound: HTMLAudioElement; // Game over sound
 
     constructor() {
         this.image = new Image();
@@ -34,6 +35,7 @@ export class Player {
         this.jumpStrength = 18; // Jump height is twice the character height
 
         this.jumpSound = document.getElementById('jumpSound') as HTMLAudioElement;
+        this.gameOverSound = new Audio('gameover.mp3'); // Initialize game over sound
 
         this.maxX = 0.4 * window.innerWidth; // Initially, the player can move up to 40% of the screen width
 
@@ -139,6 +141,8 @@ export class Player {
         if (this.gameOver) return; // Check if the game over screen is already shown
 
         this.gameOver = true;
+        this.gameOverSound.play(); // Play game over sound
+
         const gameOverText = document.createElement('div');
         gameOverText.innerText = 'GAME OVER';
         gameOverText.style.position = 'absolute';

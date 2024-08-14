@@ -1,4 +1,4 @@
-import {Player} from "./player";
+import { Player } from "./player";
 
 export interface Platform {
     x: number;
@@ -10,20 +10,18 @@ export interface Platform {
 export class PlatformsManager {
     platforms: Platform[] = [];
 
-    constructor(levelWidth: number, floorHeight: number) {
-        const moduleWidth = 0.2 * window.innerWidth; // Each module is 20% of screen width
-        const moduleHeight = 0.1 * window.innerHeight; // Module height is 10% of screen height
-        const platformX = 0.1 * levelWidth; // Start at 10% of level width
-        const platformY = floorHeight - (0.4 * window.innerHeight); // 40% above the floor
+    moduleWidth: number;
+    moduleHeight: number;
+    floorHeight: number;
+    levelWidth: number;
 
-        for (let i = 0; i < 4; i++) {
-            this.platforms.push({
-                x: platformX + i * moduleWidth,
-                y: platformY,
-                width: moduleWidth,
-                height: moduleHeight
-            });
-        }
+    constructor(levelWidth: number, floorHeight: number) {
+        this.moduleWidth = 0.05 * window.innerWidth; // Each module is 20% of screen width
+        this.moduleHeight = 0.1 * window.innerHeight; // Module height is 10% of screen height
+        this.floorHeight = floorHeight;
+        this.levelWidth = levelWidth;
+
+        this.createObstacles()
     }
 
     update(player: Player, screenOffset: number) {
@@ -91,4 +89,55 @@ export class PlatformsManager {
             context.fillRect(platform.x - offsetX, platform.y, platform.width, platform.height);
         });
     }
+
+    platform(lenght: number, startPercentage: number, heightFromFloor: number) {
+
+        for (let i = 0; i < lenght; i++) {
+            this.platforms.push({
+                x: startPercentage + i * this.moduleWidth,
+                y: heightFromFloor,
+                width: this.moduleWidth,
+                height: this.moduleHeight,
+            });
+        }
+
+    }
+
+    upwardStaircase(lenght: number, startPercentage: number) {
+        for (let i = 1; i <= lenght; i++) {
+            for (let j = 0; j < i; j++) {
+                this.platforms.push({
+                    x: startPercentage + (i * this.moduleWidth), // Each module moves to the right
+                    y: (this.floorHeight - this.moduleHeight) - ( j * this.moduleHeight), // Each row starts higher as i increases
+                    width: this.moduleWidth,
+                    height: this.moduleHeight,
+                });
+            }
+        }
+    }
+
+    downwardStaircase(length: number, startPercentage: number) {
+        for (let i = 0; i < length; i++) {
+            for (let j = 0; j < length - i; j++) {
+                this.platforms.push({
+                    x: startPercentage + (i * this.moduleWidth), // Each module moves to the right
+                    y: (this.floorHeight - this.moduleHeight) - (j * this.moduleHeight), // Each row is lower as i increases
+                    width: this.moduleWidth,
+                    height: this.moduleHeight,
+                });
+            }
+        }
+    }
+
+
+    createObstacles() {
+        this.platform(4, 0.15 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight))
+
+        this.upwardStaircase(5, 0.03 * this.levelWidth)
+        this.downwardStaircase(5, 0.08 * this.levelWidth)
+    }
+
 }
+
+
+

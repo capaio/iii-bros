@@ -20,25 +20,18 @@ export class PlatformsManager {
     moduleHeight: number;
     floorHeight: number;
     levelWidth: number;
-    brickPattern: CanvasPattern | null = null;
+    brickImage: HTMLImageElement;
 
-    constructor(levelWidth: number, floorHeight: number, context: CanvasRenderingContext2D) {
+    constructor(levelWidth: number, floorHeight: number) {
         this.moduleWidth = 0.05 * window.innerWidth; // Each module is 5% of screen width
         this.moduleHeight = 0.1 * window.innerHeight; // Module height is 10% of screen height
         this.floorHeight = floorHeight;
         this.levelWidth = levelWidth;
 
-        this.createBrickPattern(context);
+        this.brickImage = new Image();
+        this.brickImage.src = 'brick.png'; // Path to your brick image
+
         this.createObstacles();
-    }
-
-    createBrickPattern(context: CanvasRenderingContext2D) {
-        const brickImage = new Image();
-        brickImage.src = 'brick.png'; // Path to your brick image
-
-        brickImage.onload = () => {
-            this.brickPattern = context.createPattern(brickImage, 'repeat');
-        };
     }
 
     update(player: Player, screenOffset: number) {
@@ -111,14 +104,8 @@ export class PlatformsManager {
     }
 
     draw(context: CanvasRenderingContext2D, offsetX: number) {
-        if (this.brickPattern) {
-            context.fillStyle = this.brickPattern; // Use the brick pattern if it is ready
-        } else {
-            context.fillStyle = '#555555'; // Default color if pattern is not ready
-        }
-
         this.platforms.forEach(platform => {
-            context.fillRect(platform.x - offsetX, platform.y, platform.width, platform.height);
+            context.drawImage(this.brickImage, platform.x - offsetX, platform.y, platform.width, platform.height);
         });
 
         this.holes.forEach(hole => {

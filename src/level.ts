@@ -30,7 +30,7 @@ export class Level {
 
         // Initialize enemies and platforms managers
         this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
-        this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight, context);
+        this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
 
         // Add 15 beer items
         for (let i = 0; i < 15; i++) {

@@ -88,7 +88,7 @@ window.onload = () => {
         canvas.height = window.innerHeight;
 
         const player = new Player();
-        const level = new Level();
+        const level = new Level(context);
         let score = 0;
         let isMovingLeft = false;
         let isMovingRight = false;

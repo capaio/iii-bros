@@ -15,7 +15,7 @@ export class Level {
     enemiesManager: EnemiesManager;
     platformsManager: PlatformsManager;
 
-    constructor() {
+    constructor(context: CanvasRenderingContext2D) {
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
         this.levelWidth = 10 * window.innerWidth; // Level length 10x screen width
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
@@ -30,7 +30,7 @@ export class Level {
 
         // Initialize enemies and platforms managers
         this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
-        this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
+        this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight, context);
 
         // Add 15 beer items
         for (let i = 0; i < 15; i++) {

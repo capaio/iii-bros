@@ -40,6 +40,7 @@ module.exports = {
                 { from: './bush.png', to: 'bush.png' },
                 { from: './cloud.png', to: 'cloud.png' },
                 { from: './enemy.png', to: 'enemy.png' },
+                { from: './brick.png', to: 'brick.png' },
                 { from: './iii.png', to: 'iii.png' },
                 { from: './splash_screen.webp', to: 'splash_screen.webp' },
                 { from: './coin.wav', to: 'coin.wav' },

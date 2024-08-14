@@ -6,8 +6,6 @@ export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
     clouds: { x: number, y: number, width: number, height: number }[] = [];
     bushes: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
-    holeX: number;
-    holeWidth: number;
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
@@ -18,10 +16,8 @@ export class Level {
     platformsManager: PlatformsManager;
 
     constructor() {
-        this.holeWidth = 100; // Width of the hole
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
         this.levelWidth = 10 * window.innerWidth; // Level length 10x screen width
-        this.holeX = this.levelWidth - this.holeWidth - 100; // Position of the hole from the end
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
         this.cloudImage = new Image();
@@ -85,15 +81,6 @@ export class Level {
         this.enemiesManager.update(player, screenOffset);
         this.platformsManager.update(player, screenOffset);
 
-        // Check if the player falls into the hole
-        if (
-            player.x > this.holeX - screenOffset &&
-            player.x + player.width < this.holeX - screenOffset + this.holeWidth &&
-            player.y + player.height >= this.floorHeight
-        ) {
-            player.fall();
-        }
-
         // Check for beer collection
         this.beerItems = this.beerItems.filter(item => {
             const adjustedX = item.x - screenOffset;
@@ -116,9 +103,6 @@ export class Level {
         context.fillStyle = '#954b0c';
         context.fillRect(-offsetX, this.floorHeight, this.levelWidth, 40);
 
-        // Draw the hole
-        context.fillStyle = 'black';
-        context.fillRect(this.holeX - offsetX, this.floorHeight, this.holeWidth, 40);
 
         // Draw the end marker
         context.fillStyle = 'green';

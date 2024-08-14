@@ -7,8 +7,14 @@ export interface Platform {
     height: number;
 }
 
+export interface Hole {
+    holeX: number;
+    holeWidth: number;
+}
+
 export class PlatformsManager {
     platforms: Platform[] = [];
+    holes: Hole[] = [];
 
     moduleWidth: number;
     moduleHeight: number;
@@ -81,6 +87,16 @@ export class PlatformsManager {
                 player.velocityY = 0;
             }
         });
+
+        this.holes.forEach(hole => {
+            if (
+                player.x > hole.holeX - screenOffset &&
+                player.x + player.width < hole.holeX - screenOffset + hole.holeWidth &&
+                player.y + player.height >= this.floorHeight
+            ) {
+                player.fall();
+            }
+        })
     }
 
     draw(context: CanvasRenderingContext2D, offsetX: number) {
@@ -88,7 +104,19 @@ export class PlatformsManager {
         this.platforms.forEach(platform => {
             context.fillRect(platform.x - offsetX, platform.y, platform.width, platform.height);
         });
+
+        this.holes.forEach(hole => {
+            this.drawHole(context, offsetX, hole.holeX, hole.holeWidth);
+        });
     }
+
+    drawHole(context: CanvasRenderingContext2D, offsetX: number, holeX: number, holeWidth: number) {
+        // Draw the hole
+        context.fillStyle = 'black';
+        context.fillRect(holeX - offsetX, this.floorHeight, holeWidth, 40);
+    }
+
+
 
     platform(lenght: number, startPercentage: number, heightFromFloor: number) {
 
@@ -129,12 +157,20 @@ export class PlatformsManager {
         }
     }
 
+    hole(x: number, width: number) {
+        this.holes.push({
+            holeX: x,
+            holeWidth: width
+        });
+    }
+
 
     createObstacles() {
+        this.upwardStaircase(4, 0.03 * this.levelWidth)
+        let start = 0.03 * this.levelWidth + 5 * this.moduleWidth
+        this.hole(start, 100)
+        this.downwardStaircase(5, start + 100)
         this.platform(4, 0.15 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight))
-
-        this.upwardStaircase(5, 0.03 * this.levelWidth)
-        this.downwardStaircase(5, 0.08 * this.levelWidth)
     }
 
 }

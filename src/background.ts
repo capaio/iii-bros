@@ -1,6 +1,13 @@
 
+export interface BackgroundItem {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
 
-export const getClouds = (levelWidth: number, floorHeight: number):{ x: number, y: number, width: number, height: number }[] => {
+
+export const getClouds = (levelWidth: number, floorHeight: number):BackgroundItem[] => {
     return [
         {
             x: 0.01 * levelWidth,
@@ -169,6 +176,93 @@ export const getClouds = (levelWidth: number, floorHeight: number):{ x: number, 
             y: 0.1 * (floorHeight / 2),
             width: 100,
             height: 50
+        },
+    ]
+}
+
+export const getBushes = (levelWidth: number, floorHeight: number, width: number, height: number):BackgroundItem[] => {
+
+    const newWidth = width * 0.1; // Adjust size as needed
+    const newHeight = height * 0.1;
+
+    return [
+        {
+            x: 0.01 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.1 * levelWidth,
+            y: floorHeight - newHeight *2, // Place on the floor
+            width: newWidth *1.5,
+            height: newHeight *2,
+        },
+        {
+            x: 0.35 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.36 * levelWidth,
+            y: floorHeight - newHeight *2, // Place on the floor
+            width: newWidth * 1.5,
+            height: newHeight * 2,
+        },
+        {
+            x: 0.38 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.39 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.58 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.60 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.61 * levelWidth,
+            y: floorHeight - newHeight, // Place on the floor
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.65 * levelWidth,
+            y: floorHeight - newHeight *1.2, // Place on the floor
+            width: newWidth*1.5,
+            height: newHeight*1.2,
+        },
+        {
+            x: 0.67 * levelWidth,
+            y: floorHeight - newHeight *1.2, // Place on the floor
+            width: newWidth*1.5,
+            height: newHeight*1.2,
+        },
+        {
+            x: 0.68 * levelWidth,
+            y: floorHeight - newHeight *1.2, // Place on the floor
+            width: newWidth*1.5,
+            height: newHeight*1.2,
+        },
+        {
+            x: 0.89 * levelWidth,
+            y: floorHeight - newHeight , // Place on the floor
+            width: newWidth,
+            height: newHeight,
         },
     ]
 }

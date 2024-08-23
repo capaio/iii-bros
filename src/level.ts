@@ -1,18 +1,19 @@
 import { Player } from './player';
 import { EnemiesManager } from './enemies';
 import { PlatformsManager } from './platform';
-import {getClouds} from "./background";
+import {BackgroundItem, getBushes, getClouds} from "./background";
 
 export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
-    clouds: { x: number, y: number, width: number, height: number }[] = [];
-    bushes: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
+    clouds: BackgroundItem[] = [];
+    bushes: BackgroundItem[] = [];
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
     cloudImage: HTMLImageElement;
     bushImage: HTMLImageElement;
     castleImage: HTMLImageElement;
+    beerImage: HTMLImageElement;
     gameOver: boolean;
     enemiesManager: EnemiesManager;
     platformsManager: PlatformsManager;
@@ -30,6 +31,9 @@ export class Level {
 
         this.castleImage = new Image();
         this.castleImage.src = 'castle.webp'; // Load the castle image
+
+        this.beerImage = new Image();
+        this.beerImage.src = 'beer.png'; // Load the beer image
 
         this.gameOver = false;
 
@@ -55,6 +59,8 @@ export class Level {
         }
 
         this.clouds = getClouds(this.levelWidth, this.floorHeight);
+        //this.bushes = getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
+
 
         // Add 20 clouds
         // for (let i = 0; i < 20; i++) {
@@ -68,17 +74,18 @@ export class Level {
 
         // Add 15 bushes
         this.bushImage.onload = () => {
-            for (let i = 0; i < 15; i++) {
-                const width = this.bushImage.width * 0.1; // Adjust size as needed
-                const height = this.bushImage.height * 0.1;
-                this.bushes.push({
-                    x: Math.random() * this.levelWidth,
-                    y: this.floorHeight - height, // Place on the floor
-                    width: width,
-                    height: height,
-                    image: this.bushImage
-                });
-            }
+            // for (let i = 0; i < 15; i++) {
+            //     const width = this.bushImage.width * 0.1; // Adjust size as needed
+            //     const height = this.bushImage.height * 0.1;
+            //     this.bushes.push({
+            //         x: Math.random() * this.levelWidth,
+            //         y: this.floorHeight - height, // Place on the floor
+            //         width: width,
+            //         height: height,
+            //         image: this.bushImage
+            //     });
+            // }
+            this.bushes = getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
         };
     }
 
@@ -129,7 +136,7 @@ export class Level {
 
         // Draw bushes
         this.bushes.forEach(bush => {
-            context.drawImage(bush.image, bush.x - offsetX, bush.y, bush.width, bush.height);
+            context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
         });
 
         // Draw the castle at the end of the level

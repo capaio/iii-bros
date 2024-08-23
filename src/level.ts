@@ -11,6 +11,7 @@ export class Level {
     endMarkerX: number;
     cloudImage: HTMLImageElement;
     bushImage: HTMLImageElement;
+    castleImage: HTMLImageElement;
     gameOver: boolean;
     enemiesManager: EnemiesManager;
     platformsManager: PlatformsManager;
@@ -25,6 +26,9 @@ export class Level {
 
         this.bushImage = new Image();
         this.bushImage.src = 'bush.png';
+
+        this.castleImage = new Image();
+        this.castleImage.src = 'castle.webp'; // Load the castle image
 
         this.gameOver = false;
 
@@ -103,7 +107,6 @@ export class Level {
         context.fillStyle = '#954b0c';
         context.fillRect(-offsetX, this.floorHeight, this.levelWidth, 40);
 
-
         // Draw the end marker
         context.fillStyle = 'green';
         context.fillRect(this.endMarkerX - offsetX, this.floorHeight - 40, 50, 80);
@@ -125,6 +128,11 @@ export class Level {
         this.bushes.forEach(bush => {
             context.drawImage(bush.image, bush.x - offsetX, bush.y, bush.width, bush.height);
         });
+
+        // Draw the castle at the end of the level
+        const castleWidth = 350; // Adjust the width of the castle as needed
+        const castleHeight = 300; // Adjust the height of the castle as needed
+        context.drawImage(this.castleImage, this.endMarkerX - offsetX - castleWidth, this.floorHeight - castleHeight, castleWidth, castleHeight);
 
         // Draw enemies
         this.enemiesManager.draw(context, offsetX);

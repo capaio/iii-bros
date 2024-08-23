@@ -197,11 +197,22 @@ export class PlatformsManager {
         this.platform(6, (0.65 * this.levelWidth) + 200, this.floorHeight - (0.6 * window.innerHeight));
 
 
-        this.upwardStaircase(4, 0.73 * this.levelWidth);
-        start = 0.73 * this.levelWidth + 5 * this.moduleWidth;
+        this.upwardStaircase(4, 0.71 * this.levelWidth);
+        start = 0.71 * this.levelWidth + 5 * this.moduleWidth;
         this.hole(start, 150);
         this.downwardStaircase(4, start + 150);
 
+
+        this.hole(0.79 * this.levelWidth, 700);
+        this.platform(1, (0.79 * this.levelWidth) + (2*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
+        this.platform(1, (0.79 * this.levelWidth) + (5*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
+        this.platform(1, (0.79 * this.levelWidth) + (8*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
+        this.platform(1, (0.79 * this.levelWidth) + (11*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
+        this.platform(1, (0.79 * this.levelWidth) + (14*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
+        this.platform(1, (0.79 * this.levelWidth) + (17*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
+
+
+        this.upwardStaircase(6, 0.90 * this.levelWidth);
 
     }
 }

@@ -183,7 +183,7 @@ export class PlatformsManager {
         this.hole(start, 100);
 
 
-        this.hole(0.42 * this.levelWidth, 850);
+        this.hole(0.42 * this.levelWidth, 800);
         this.platform(2, 0.44 * this.levelWidth, this.floorHeight - (0.2 * window.innerHeight));
         this.platform(2, 0.46 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
         this.platform(2, 0.48 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));

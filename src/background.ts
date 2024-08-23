@@ -266,3 +266,287 @@ export const getBushes = (levelWidth: number, floorHeight: number, width: number
         },
     ]
 }
+
+export const getBeers = (levelWidth: number, floorHeight: number, width: number, height: number):BackgroundItem[] => {
+
+    const newWidth = width * 0.05; // 50% smaller
+    const newHeight = height * 0.05;
+    return [
+        {
+            x: 0.06 * (levelWidth - newWidth),
+            y: 0.6 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.152 * (levelWidth - newWidth),
+            y: 0.8 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.16 * (levelWidth - newWidth),
+            y: 0.8 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.168 * (levelWidth - newWidth),
+            y: 0.8 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.176 * (levelWidth - newWidth),
+            y: 0.8 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.205 * (levelWidth - newWidth),
+            y: 0.9 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.209 * (levelWidth - newWidth),
+            y: 0.9 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.225 * (levelWidth - newWidth),
+            y: 0.8 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.229 * (levelWidth - newWidth),
+            y: 0.8 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.245 * (levelWidth - newWidth),
+            y: 0.7 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.249 * (levelWidth - newWidth),
+            y: 0.7 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.32 * (levelWidth - newWidth),
+            y: 0.7 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.35 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.355 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.360 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.365 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.370 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.375 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.380 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.385 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.390 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.395 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.400 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.405 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.445 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.465 * (levelWidth - newWidth),
+            y: 0.85 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.485 * (levelWidth - newWidth),
+            y: 0.85 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.505 * (levelWidth - newWidth),
+            y: 0.85 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.585 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.590 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.595 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.600 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.625 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.630 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.635 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.640 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.685 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.690 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.695 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.700 * (levelWidth - newWidth),
+            y: 0.3 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.804 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.819 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.834 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.849 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.864 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+        {
+            x: 0.879 * (levelWidth - newWidth),
+            y: 1.2 * (floorHeight / 2),
+            width: newWidth,
+            height: newHeight,
+        },
+    ]
+}

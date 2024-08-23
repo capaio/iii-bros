@@ -90,10 +90,10 @@ export class Player {
     }
 
     fall() {
-        this.isFalling = true;
-        this.velocityX = 0;
-        this.velocityY = 10; // Faster fall speed
-        this.isOnGround = false;
+        // this.isFalling = true;
+        // this.velocityX = 0;
+        // this.velocityY = 10; // Faster fall speed
+        // this.isOnGround = false;
     }
 
     update(levelWidth: number) {

@@ -1,10 +1,10 @@
 import { Player } from './player';
 import { EnemiesManager } from './enemies';
 import { PlatformsManager } from './platform';
-import {BackgroundItem, getBushes, getClouds} from "./background";
+import {BackgroundItem, getBeers, getBushes, getClouds} from "./background";
 
 export class Level {
-    beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
+    beerItems: BackgroundItem[] = [];
     clouds: BackgroundItem[] = [];
     bushes: BackgroundItem[] = [];
     floorHeight: number;
@@ -42,50 +42,29 @@ export class Level {
         this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
 
         // Add 15 beer items
-        for (let i = 0; i < 15; i++) {
-            const beerImage = new Image();
-            beerImage.src = 'beer.png';
-            beerImage.onload = () => {
-                const width = beerImage.width * 0.05; // 50% smaller
-                const height = beerImage.height * 0.05;
-                this.beerItems.push({
-                    x: Math.random() * (this.levelWidth - width),
-                    y: Math.random() * (this.floorHeight - height - 40), // Ensure it's above the floor
-                    width: width,
-                    height: height,
-                    image: beerImage
-                });
-            };
-        }
-
-        this.clouds = getClouds(this.levelWidth, this.floorHeight);
-        //this.bushes = getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
-
-
-        // Add 20 clouds
-        // for (let i = 0; i < 20; i++) {
-        //     this.clouds.push({
-        //         x: Math.random() * this.levelWidth,
-        //         y: Math.random() * (this.floorHeight / 2),
-        //         width: 100,
-        //         height: 50
-        //     });
+        // for (let i = 0; i < 15; i++) {
+        //     const beerImage = new Image();
+        //     beerImage.src = 'beer.png';
+        //     beerImage.onload = () => {
+        //         const width = beerImage.width * 0.05; // 50% smaller
+        //         const height = beerImage.height * 0.05;
+        //         this.beerItems.push({
+        //             x: Math.random() * (this.levelWidth - width),
+        //             y: Math.random() * (this.floorHeight - height - 40), // Ensure it's above the floor
+        //             width: width,
+        //             height: height,
+        //             image: beerImage
+        //         });
+        //     };
         // }
 
-        // Add 15 bushes
+        this.clouds = getClouds(this.levelWidth, this.floorHeight);
+
         this.bushImage.onload = () => {
-            // for (let i = 0; i < 15; i++) {
-            //     const width = this.bushImage.width * 0.1; // Adjust size as needed
-            //     const height = this.bushImage.height * 0.1;
-            //     this.bushes.push({
-            //         x: Math.random() * this.levelWidth,
-            //         y: this.floorHeight - height, // Place on the floor
-            //         width: width,
-            //         height: height,
-            //         image: this.bushImage
-            //     });
-            // }
             this.bushes = getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
+        };
+        this.beerImage.onload = () => {
+            this.beerItems = getBeers(this.levelWidth, this.floorHeight, this.beerImage.width, this.beerImage.height);
         };
     }
 
@@ -121,12 +100,9 @@ export class Level {
         context.fillStyle = 'green';
         context.fillRect(this.endMarkerX - offsetX, this.floorHeight - 40, 50, 80);
 
-        // Draw platforms
-        this.platformsManager.draw(context, offsetX);
-
-        // Draw beer items
-        this.beerItems.forEach(item => {
-            context.drawImage(item.image, item.x - offsetX, item.y, item.width, item.height);
+        // Draw bushes
+        this.bushes.forEach(bush => {
+            context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
         });
 
         // Draw clouds
@@ -134,10 +110,16 @@ export class Level {
             context.drawImage(this.cloudImage, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
         });
 
-        // Draw bushes
-        this.bushes.forEach(bush => {
-            context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
+        // Draw platforms
+        this.platformsManager.draw(context, offsetX);
+
+        // Draw beer items
+        this.beerItems.forEach(item => {
+            context.drawImage(this.beerImage, item.x - offsetX, item.y, item.width, item.height);
         });
+
+
+
 
         // Draw the castle at the end of the level
         const castleWidth = 350; // Adjust the width of the castle as needed

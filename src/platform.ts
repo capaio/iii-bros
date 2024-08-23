@@ -103,7 +103,7 @@ export class PlatformsManager {
         });
     }
 
-    draw(context: CanvasRenderingContext2D, offsetX: number) {
+        draw(context: CanvasRenderingContext2D, offsetX: number) {
         this.platforms.forEach(platform => {
             context.drawImage(this.brickImage, platform.x - offsetX, platform.y, platform.width, platform.height);
         });
@@ -168,6 +168,40 @@ export class PlatformsManager {
         let start = 0.03 * this.levelWidth + 5 * this.moduleWidth;
         this.hole(start, 100);
         this.downwardStaircase(4, start + 100);
-        this.platform(4, 0.15 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
+
+        this.hole(0.15 * this.levelWidth - 100, (7*this.moduleWidth) + 100)
+        this.platform(6, 0.15 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
+
+        this.platform(4, 0.2 * this.levelWidth, this.floorHeight - (0.2 * window.innerHeight));
+        this.platform(4, 0.22 * this.levelWidth, this.floorHeight - (0.3 * window.innerHeight));
+        this.platform(4, 0.24 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
+
+        this.hole(0.26 * this.levelWidth - 50, (7*this.moduleWidth) )
+
+        this.upwardStaircase(4, 0.29 * this.levelWidth);
+        start = 0.29 * this.levelWidth + 5 * this.moduleWidth;
+        this.hole(start, 100);
+
+
+        this.hole(0.42 * this.levelWidth, 850);
+        this.platform(2, 0.44 * this.levelWidth, this.floorHeight - (0.2 * window.innerHeight));
+        this.platform(2, 0.46 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
+        this.platform(2, 0.48 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
+        this.platform(2, 0.50 * this.levelWidth, this.floorHeight - (0.4 * window.innerHeight));
+
+
+        this.upwardStaircase(6, 0.52 * this.levelWidth);
+        start = 0.52 * this.levelWidth + 6 * this.moduleWidth;
+        this.platform(6, start + 200, this.floorHeight - (0.6 * window.innerHeight));
+        this.platform(6, 0.62 * this.levelWidth, this.floorHeight - (0.6 * window.innerHeight));
+        this.platform(6, (0.65 * this.levelWidth) + 200, this.floorHeight - (0.6 * window.innerHeight));
+
+
+        this.upwardStaircase(4, 0.73 * this.levelWidth);
+        start = 0.73 * this.levelWidth + 5 * this.moduleWidth;
+        this.hole(start, 150);
+        this.downwardStaircase(4, start + 150);
+
+
     }
 }

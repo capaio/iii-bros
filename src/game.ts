@@ -37,7 +37,7 @@ window.onload = () => {
     let screenOffset = 0;
     let gameOver = false;
     let victory = false;
-    let timeLeft = 50; // 10 seconds timer
+    let timeLeft = 120; // 10 seconds timer
 
     splashMusic.play();
 

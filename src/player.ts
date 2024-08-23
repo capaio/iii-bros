@@ -32,7 +32,7 @@ export class Player {
             this.width = this.height * this.aspectRatio; // Maintain the aspect ratio
         };
 
-        this.jumpStrength = 12; // Jump height is twice the character height
+        this.jumpStrength = 18; // Jump height is twice the character height
 
         this.jumpSound = document.getElementById('jumpSound') as HTMLAudioElement;
         this.gameOverSound = new Audio('gameover.mp3'); // Initialize game over sound

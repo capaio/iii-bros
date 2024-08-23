@@ -1,6 +1,7 @@
 import { Player } from './player';
 import { EnemiesManager } from './enemies';
 import { PlatformsManager } from './platform';
+import {getClouds} from "./background";
 
 export class Level {
     beerItems: { x: number, y: number, width: number, height: number, image: HTMLImageElement }[] = [];
@@ -53,15 +54,17 @@ export class Level {
             };
         }
 
+        this.clouds = getClouds(this.levelWidth, this.floorHeight);
+
         // Add 20 clouds
-        for (let i = 0; i < 20; i++) {
-            this.clouds.push({
-                x: Math.random() * this.levelWidth,
-                y: Math.random() * (this.floorHeight / 2),
-                width: 100,
-                height: 50
-            });
-        }
+        // for (let i = 0; i < 20; i++) {
+        //     this.clouds.push({
+        //         x: Math.random() * this.levelWidth,
+        //         y: Math.random() * (this.floorHeight / 2),
+        //         width: 100,
+        //         height: 50
+        //     });
+        // }
 
         // Add 15 bushes
         this.bushImage.onload = () => {

@@ -47,7 +47,7 @@ export class EnemiesManager {
             width: width,
             height: height,
             image: this.enemyImage,
-            speed: 2,
+            speed: 1.5,
             startX: startX,
             endX: endX,
             movingRight: true

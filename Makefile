@@ -6,10 +6,14 @@ cordova-build-android:
 	@echo "Building Android project"
 	@cd cordova && cordova build android
 
+cordova-build-android-release:
+	@echo "Building Android project"
+	@cd cordova && cordova build android --release -- --packageType=apk
+
 cordova-start:
 	@echo "Starting Cordova project"
 	@cd cordova && cordova serve
 
-cordova-dev:
+cordova-run-android:
 	@echo "Starting Cordova project in dev mode"
-	@yarn run watch:cordova && cd cordova && cordova serve
+	@cd cordova && cordova run android

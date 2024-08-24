@@ -1,11 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.iiibros.game" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>IIIBros</name>
-    <description>Sample Apache Cordova App</description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <name>Super III Bros</name>
+    <description>IIIBros videogame</description>
+    <author email="carlocappai@gmail.com" href="https://www.carlocappai.me">
+        Carlo Cappai
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <preference name="Orientation" value="landscape" />
+    <icon src="www/icon.jpeg" />
+    <platform name="android">
+        <preference name="AndroidWindowSplashScreenBackground" value="#000000" />
+        <preference name="SplashScreenDelay" value="200" />
+    </platform>
+
 </widget>

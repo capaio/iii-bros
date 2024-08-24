@@ -37,7 +37,7 @@ window.onload = () => {
     let screenOffset = 0;
     let gameOver = false;
     let victory = false;
-    let timeLeft = 120; // 10 seconds timer
+    let timeLeft = 99;
 
     splashMusic.play();
 
@@ -241,16 +241,16 @@ window.onload = () => {
         };
 
         // Touch controls for canvas
-        canvas.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            if (touch.clientX < canvas.width / 2) {
-                isMovingLeft = true;
-                player.moveLeft();
-            } else {
-                isMovingRight = true;
-                player.moveRight();
-            }
-        });
+        // canvas.addEventListener('touchstart', (e) => {
+        //     const touch = e.touches[0];
+        //     if (touch.clientX < canvas.width / 2) {
+        //         isMovingLeft = true;
+        //         player.moveLeft();
+        //     } else {
+        //         isMovingRight = true;
+        //         player.moveRight();
+        //     }
+        // });
 
         canvas.addEventListener('touchend', () => {
             isMovingLeft = false;

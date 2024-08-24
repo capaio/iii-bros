@@ -203,7 +203,7 @@ export class PlatformsManager {
         this.downwardStaircase(4, start + 150);
 
 
-        this.hole(0.79 * this.levelWidth, 700);
+        this.hole(0.79 * this.levelWidth, 900 );
         this.platform(1, (0.79 * this.levelWidth) + (2*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
         this.platform(1, (0.79 * this.levelWidth) + (5*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));
         this.platform(1, (0.79 * this.levelWidth) + (8*this.moduleWidth), this.floorHeight - (0.1 * window.innerHeight));

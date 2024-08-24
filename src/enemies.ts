@@ -15,34 +15,35 @@ export interface Enemy {
 export class EnemiesManager {
     enemies: Enemy[] = [];
     enemyImage: HTMLImageElement;
-    floorHeight: number;
     gameOver: boolean;
 
     constructor(levelWidth: number, floorHeight: number) {
-        this.floorHeight = floorHeight;
         this.gameOver = false;
 
         this.enemyImage = new Image();
         this.enemyImage.src = 'enemy.png';
 
+        //const onTheFloor = this.floorHeight - height
+
         this.enemyImage.onload = () => {
-            // Define specific enemies with their own ranges
+            // Define specific enemies with their own ranges and y positions
             this.enemies.push(
-                this.createEnemy(0.09 * levelWidth, 0.13 * levelWidth),
-                this.createEnemy(0.4 * levelWidth, 0.5 * levelWidth),
-                this.createEnemy(0.6 * levelWidth, 0.7 * levelWidth),
-                this.createEnemy(0.8 * levelWidth, 0.9 * levelWidth),
-                this.createEnemy(0.85 * levelWidth, 0.95 * levelWidth)
+                this.createEnemy(0.09 * levelWidth, 0.13 * levelWidth, floorHeight),
+                this.createEnemy(0.15 * levelWidth, 0.175 * levelWidth, floorHeight - (0.4 * window.innerHeight)),
+                this.createEnemy(0.185 * levelWidth, 0.25 * levelWidth, floorHeight),
+                this.createEnemy(0.33 * levelWidth, 0.40 * levelWidth, floorHeight),
+                this.createEnemy(0.55 * levelWidth, 0.60 * levelWidth, floorHeight),
+                this.createEnemy(0.62 * levelWidth, 0.7 * levelWidth, floorHeight),
             );
         };
     }
 
-    createEnemy(startX: number, endX: number): Enemy {
+    createEnemy(startX: number, endX: number, y: number): Enemy {
         const width = this.enemyImage.width * 0.1;
         const height = this.enemyImage.height * 0.1;
         return {
             x: startX,
-            y: this.floorHeight - height,
+            y: y - height, // Adjust y to consider the height of the enemy
             width: width,
             height: height,
             image: this.enemyImage,

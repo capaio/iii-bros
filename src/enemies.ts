@@ -28,7 +28,7 @@ export class EnemiesManager {
         this.enemyImage.onload = () => {
             // Define specific enemies with their own ranges
             this.enemies.push(
-                this.createEnemy(0.07 * levelWidth, 0.09 * levelWidth),
+                this.createEnemy(0.09 * levelWidth, 0.13 * levelWidth),
                 this.createEnemy(0.4 * levelWidth, 0.5 * levelWidth),
                 this.createEnemy(0.6 * levelWidth, 0.7 * levelWidth),
                 this.createEnemy(0.8 * levelWidth, 0.9 * levelWidth),
@@ -88,7 +88,20 @@ export class EnemiesManager {
 
     draw(context: CanvasRenderingContext2D, offsetX: number) {
         this.enemies.forEach(enemy => {
-            context.drawImage(enemy.image, enemy.x - offsetX, enemy.y, enemy.width, enemy.height);
+            const adjustedX = enemy.x - offsetX;
+
+            context.save();
+
+            if (enemy.movingRight) {
+                // Flip the image horizontally
+                context.scale(-1, 1);
+                context.drawImage(enemy.image, -adjustedX - enemy.width, enemy.y, enemy.width, enemy.height);
+            } else {
+                // Draw normally
+                context.drawImage(enemy.image, adjustedX, enemy.y, enemy.width, enemy.height);
+            }
+
+            context.restore();
         });
     }
 }

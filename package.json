@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack",
+    "build:cordova": "webpack --config webpack.config-cordova.js",
     "watch": "webpack --watch",
+    "watch:cordova": "webpack --watch --config webpack.config-cordova.js",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],

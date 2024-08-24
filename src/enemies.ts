@@ -1,4 +1,4 @@
-import {Player} from "./player";
+import { Player } from "./player";
 
 export interface Enemy {
     x: number;
@@ -7,6 +7,9 @@ export interface Enemy {
     height: number;
     image: HTMLImageElement;
     speed: number;
+    startX: number;
+    endX: number;
+    movingRight: boolean;
 }
 
 export class EnemiesManager {
@@ -23,18 +26,30 @@ export class EnemiesManager {
         this.enemyImage.src = 'enemy.png';
 
         this.enemyImage.onload = () => {
-            for (let i = 0; i < 5; i++) {
-                const width = this.enemyImage.width * 0.1; // Adjust size as needed
-                const height = this.enemyImage.height * 0.1;
-                this.enemies.push({
-                    x: levelWidth + Math.random(), // Spawn just outside the level on the right
-                    y: this.floorHeight - height, // Place on the floor
-                    width: width,
-                    height: height,
-                    image: this.enemyImage,
-                    speed: 4 // Adjust speed as needed
-                });
-            }
+            // Define specific enemies with their own ranges
+            this.enemies.push(
+                this.createEnemy(0.07 * levelWidth, 0.09 * levelWidth),
+                this.createEnemy(0.4 * levelWidth, 0.5 * levelWidth),
+                this.createEnemy(0.6 * levelWidth, 0.7 * levelWidth),
+                this.createEnemy(0.8 * levelWidth, 0.9 * levelWidth),
+                this.createEnemy(0.85 * levelWidth, 0.95 * levelWidth)
+            );
+        };
+    }
+
+    createEnemy(startX: number, endX: number): Enemy {
+        const width = this.enemyImage.width * 0.1;
+        const height = this.enemyImage.height * 0.1;
+        return {
+            x: startX,
+            y: this.floorHeight - height,
+            width: width,
+            height: height,
+            image: this.enemyImage,
+            speed: 2,
+            startX: startX,
+            endX: endX,
+            movingRight: true
         };
     }
 
@@ -42,7 +57,20 @@ export class EnemiesManager {
         if (this.gameOver) return;
 
         this.enemies.forEach(enemy => {
-            enemy.x -= enemy.speed; // Move enemy left
+            // Adjust the enemy position based on movement direction
+            if (enemy.movingRight) {
+                enemy.x += enemy.speed;
+                if (enemy.x >= enemy.endX) {
+                    enemy.x = enemy.endX;
+                    enemy.movingRight = false; // Change direction to left
+                }
+            } else {
+                enemy.x -= enemy.speed;
+                if (enemy.x <= enemy.startX) {
+                    enemy.x = enemy.startX;
+                    enemy.movingRight = true; // Change direction to right
+                }
+            }
 
             const adjustedX = enemy.x - screenOffset;
             if (
@@ -56,9 +84,6 @@ export class EnemiesManager {
                 this.gameOver = true;
             }
         });
-
-        // Remove enemies that have gone off the left side of the screen
-        this.enemies = this.enemies.filter(enemy => enemy.x + enemy.width > screenOffset);
     }
 
     draw(context: CanvasRenderingContext2D, offsetX: number) {

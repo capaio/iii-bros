@@ -163,6 +163,19 @@ export class PlatformsManager {
         });
     }
 
+    isPlayerBlockedOnRight(player: Player, screenOffset: number): boolean {
+        return this.platforms.some(platform => {
+            const adjustedX = platform.x - screenOffset;
+            return (
+                player.velocityX > 0 && // Player is moving to the right
+                player.x + player.width <= adjustedX && // Player's right side is to the left of the platform's left side
+                player.x + player.width + player.velocityX >= adjustedX && // Player's next position would intersect the platform
+                player.y + player.height > platform.y && // Player's bottom is below the platform's top
+                player.y < platform.y + platform.height // Player's top is above the platform's bottom
+            );
+        });
+    }
+
     createObstacles() {
         this.upwardStaircase(4, 0.03 * this.levelWidth);
         let start = 0.03 * this.levelWidth + 5 * this.moduleWidth;

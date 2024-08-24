@@ -1,7 +1,7 @@
 import { Player } from './player';
 import { EnemiesManager } from './enemies';
 import { PlatformsManager } from './platform';
-import {BackgroundItem, getBeers, getBushes, getClouds} from "./background";
+import { BackgroundItem, getBeers, getBushes, getClouds } from './background';
 
 export class Level {
     beerItems: BackgroundItem[] = [];
@@ -17,6 +17,7 @@ export class Level {
     gameOver: boolean;
     enemiesManager: EnemiesManager;
     platformsManager: PlatformsManager;
+    currentScreenOffset: number = 0;
 
     constructor(context: CanvasRenderingContext2D) {
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
@@ -41,23 +42,7 @@ export class Level {
         this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
         this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
 
-        // Add 15 beer items
-        // for (let i = 0; i < 15; i++) {
-        //     const beerImage = new Image();
-        //     beerImage.src = 'beer.png';
-        //     beerImage.onload = () => {
-        //         const width = beerImage.width * 0.05; // 50% smaller
-        //         const height = beerImage.height * 0.05;
-        //         this.beerItems.push({
-        //             x: Math.random() * (this.levelWidth - width),
-        //             y: Math.random() * (this.floorHeight - height - 40), // Ensure it's above the floor
-        //             width: width,
-        //             height: height,
-        //             image: beerImage
-        //         });
-        //     };
-        // }
-
+        // Initialize background items
         this.clouds = getClouds(this.levelWidth, this.floorHeight);
 
         this.bushImage.onload = () => {
@@ -71,19 +56,42 @@ export class Level {
     update(player: Player, screenOffset: number) {
         if (this.gameOver) return;
 
-        this.enemiesManager.update(player, screenOffset);
-        this.platformsManager.update(player, screenOffset);
+        this.enemiesManager.update(player, this.currentScreenOffset);
+        this.platformsManager.update(player, this.currentScreenOffset);
+
+        // Check if the player is actually able to move forward
+        // Calculate the max screen offset to stop before the green rectangle (end marker)
+        const buffer = 20; // The distance (in pixels) before the end marker where scrolling should stop
+        const maxScreenOffset = this.endMarkerX - window.innerWidth - buffer;
+
+        const playerCanMoveRight = player.velocityX > 0 && player.x + player.width < this.levelWidth;
+
+        if (playerCanMoveRight) {
+            // Only update screen offset if player is moving right and not blocked
+            if (!this.platformsManager.isPlayerBlockedOnRight(player, this.currentScreenOffset)) {
+                this.currentScreenOffset += player.speed;
+            }
+        }
+
+        // Ensure screen offset does not exceed the bounds of the level
+        if (this.currentScreenOffset < 0) {
+            this.currentScreenOffset = 0;
+        } else if (this.currentScreenOffset > maxScreenOffset) {
+            this.currentScreenOffset = maxScreenOffset;
+        }
+
+        // Update background items and check for item collection
+        this.updateBackgroundItems(player);
 
         // Check for beer collection
         this.beerItems = this.beerItems.filter(item => {
-            const adjustedX = item.x - screenOffset;
+            const adjustedX = item.x - this.currentScreenOffset;
             if (
                 player.x < adjustedX + item.width &&
                 player.x + player.width > adjustedX &&
                 player.y < item.y + item.height &&
                 player.y + player.height > item.y
             ) {
-                // Beer collected
                 window.dispatchEvent(new Event('itemCollected'));
                 return false; // Remove the item
             }
@@ -91,7 +99,23 @@ export class Level {
         });
     }
 
-    draw(context: CanvasRenderingContext2D, offsetX: number) {
+    updateBackgroundItems(player: Player) {
+        // This method updates background items like clouds and bushes
+        this.clouds.forEach(cloud => {
+            cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
+        });
+
+        // Check if any bushes have scrolled off the screen and reset their position
+        this.bushes.forEach(bush => {
+            if (bush.x - this.currentScreenOffset < -bush.width) {
+                bush.x += this.levelWidth; // Move bush to the end of the level
+            }
+        });
+    }
+
+    draw(context: CanvasRenderingContext2D) {
+        const offsetX = this.currentScreenOffset;
+
         // Draw the floor
         context.fillStyle = '#954b0c';
         context.fillRect(-offsetX, this.floorHeight, this.levelWidth, 40);
@@ -100,15 +124,8 @@ export class Level {
         context.fillStyle = 'green';
         context.fillRect(this.endMarkerX - offsetX, this.floorHeight - 40, 50, 80);
 
-        // Draw bushes
-        this.bushes.forEach(bush => {
-            context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
-        });
-
-        // Draw clouds
-        this.clouds.forEach(cloud => {
-            context.drawImage(this.cloudImage, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
-        });
+        // Draw background items
+        this.drawBackgroundItems(context, offsetX);
 
         // Draw platforms
         this.platformsManager.draw(context, offsetX);
@@ -118,9 +135,6 @@ export class Level {
             context.drawImage(this.beerImage, item.x - offsetX, item.y, item.width, item.height);
         });
 
-
-
-
         // Draw the castle at the end of the level
         const castleWidth = 350; // Adjust the width of the castle as needed
         const castleHeight = 300; // Adjust the height of the castle as needed
@@ -128,5 +142,17 @@ export class Level {
 
         // Draw enemies
         this.enemiesManager.draw(context, offsetX);
+    }
+
+    drawBackgroundItems(context: CanvasRenderingContext2D, offsetX: number) {
+        // Draw clouds
+        this.clouds.forEach(cloud => {
+            context.drawImage(this.cloudImage, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
+        });
+
+        // Draw bushes
+        this.bushes.forEach(bush => {
+            context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
+        });
     }
 }

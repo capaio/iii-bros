@@ -136,7 +136,7 @@ window.onload = () => {
             }
 
             // Pass screenOffset to level.draw
-            level.draw(context, screenOffset);
+            level.draw(context);
             player.draw(context);
 
             // Draw fireworks if victory

@@ -41,29 +41,29 @@ export class Player {
 
         this.maxX = 0.4 * window.innerWidth; // Initially, the player can move up to 40% of the screen width
 
-        window.addEventListener('keydown', (e) => this.onKeyDown(e));
-        window.addEventListener('keyup', (e) => this.onKeyUp(e));
+        // window.addEventListener('keydown', (e) => this.onKeyDown(e));
+        // window.addEventListener('keyup', (e) => this.onKeyUp(e));
     }
 
-    onKeyDown(e: KeyboardEvent) {
-        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
+    // onKeyDown(e: KeyboardEvent) {
+    //     if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
+    //
+    //     if (e.code === 'ArrowLeft') {
+    //         this.moveLeft();
+    //     } else if (e.code === 'ArrowRight') {
+    //         this.moveRight();
+    //     } else if (e.code === 'Space') {
+    //         this.jump();
+    //     }
+    // }
 
-        if (e.code === 'ArrowLeft') {
-            this.moveLeft();
-        } else if (e.code === 'ArrowRight') {
-            this.moveRight();
-        } else if (e.code === 'Space') {
-            this.jump();
-        }
-    }
-
-    onKeyUp(e: KeyboardEvent) {
-        if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
-
-        if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-            this.stop();
-        }
-    }
+    // onKeyUp(e: KeyboardEvent) {
+    //     if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
+    //
+    //     if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+    //         this.stop();
+    //     }
+    // }
 
     moveLeft() {
         if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over

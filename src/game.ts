@@ -252,11 +252,38 @@ window.onload = () => {
         //     }
         // });
 
-        canvas.addEventListener('touchend', () => {
-            isMovingLeft = false;
-            isMovingRight = false;
-            player.stop();
-        });
+        // canvas.addEventListener('touchend', () => {
+        //     isMovingLeft = false;
+        //     isMovingRight = false;
+        //     player.stop();
+        // });
+
+        window.addEventListener('keydown', (e) => onKeyDown(e));
+        window.addEventListener('keyup', (e) => onKeyUp(e));
+
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.code === 'ArrowLeft') {
+                isMovingLeft = true;
+                isMovingRight = false;
+                player.moveLeft();
+            } else if (e.code === 'ArrowRight') {
+                isMovingLeft = false;
+                isMovingRight = true;
+                player.moveRight();
+            } else if (e.code === 'Space') {
+                player.jump();
+            }
+        }
+
+        const onKeyUp = (e: KeyboardEvent) => {
+            if (e.code === 'ArrowLeft') {
+                isMovingLeft = false;
+                player.stop();
+            } else if (e.code === 'ArrowRight') {
+                isMovingRight = false;
+                player.stop();
+            }
+        }
 
         // Button controls
         leftButton.addEventListener('touchstart', () => {

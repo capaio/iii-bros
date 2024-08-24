@@ -32,7 +32,7 @@ window.onload = () => {
     timerDisplay.style.border = '2px solid black';
     timerDisplay.style.padding = '10px';
 
-    let isMusicPlaying = false;
+    let isMusicPlaying = true;
     let currentScreen = 'splash'; // Possible values: 'splash', 'game'
     let screenOffset = 0;
     let gameOver = false;
@@ -87,7 +87,7 @@ window.onload = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const player = new Player();
+        const player = new Player(gameMusic);
         const level = new Level(context);
         let score = 0;
         let isMovingLeft = false;

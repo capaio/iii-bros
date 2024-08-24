@@ -17,8 +17,10 @@ export class Player {
     gameOver: boolean = false;
     maxX: number; // New property to handle the maximum X position dynamically
     gameOverSound: HTMLAudioElement; // Game over sound
+    gameMusic: HTMLAudioElement; // Game over sound
 
-    constructor() {
+    constructor(gameMusic: HTMLAudioElement) {
+        this.gameMusic = gameMusic; // Initialize game music
         this.image = new Image();
         this.image.src = 'iii.png';
         this.x = 0.05 * window.innerWidth; // Spawn 5% from the left
@@ -138,6 +140,7 @@ export class Player {
     }
 
     showGameOver() {
+        this.gameMusic.pause(); // Pause game music
         if (this.gameOver) return; // Check if the game over screen is already shown
 
         this.gameOver = true;

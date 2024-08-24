@@ -191,6 +191,21 @@ window.onload = () => {
             codeText.style.marginTop = '10px';
             victoryText.appendChild(codeText);
 
+            const restartButton = document.createElement('button');
+            restartButton.innerText = 'RESTART';
+            restartButton.style.marginTop = '20px';
+            restartButton.style.padding = '10px 20px';
+            restartButton.style.fontSize = '24px';
+            restartButton.style.cursor = 'pointer';
+            restartButton.style.backgroundColor = 'black';
+            restartButton.style.color = 'white';
+            restartButton.style.border = '2px solid white';
+            restartButton.style.fontFamily = '"Press Start 2P", cursive';
+            restartButton.onclick = () => {
+                window.location.reload(); // Reload the page to restart the game
+            };
+            victoryText.appendChild(restartButton);
+
             document.body.appendChild(victoryText);
 
             // Stop all other music and play victory sound

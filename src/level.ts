@@ -1,7 +1,9 @@
 import { Player } from './player';
 import { EnemiesManager } from './enemies';
 import { PlatformsManager } from './platform';
-import { BackgroundItem, getBeers, getBushes, getClouds } from './background';
+import { BackgroundItem } from './background';
+import {Level1} from "./levels/level-1";
+import {Hole, Platform} from "./designer/platform.designer";
 
 export class Level {
     beerItems: BackgroundItem[] = [];
@@ -16,12 +18,17 @@ export class Level {
     beerImage: HTMLImageElement;
     gameOver: boolean;
     enemiesManager: EnemiesManager;
+    platforms: Platform[] = [];
+    holes: Hole[] = [];
     platformsManager: PlatformsManager;
     currentScreenOffset: number = 0;
 
-    constructor(context: CanvasRenderingContext2D) {
+    constructor() {
+
+        const gameLevel = new Level1();
+
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
-        this.levelWidth = 10 * window.innerWidth; // Level length 10x screen width
+        this.levelWidth = gameLevel.width;
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
         this.cloudImage = new Image();
@@ -38,18 +45,21 @@ export class Level {
 
         this.gameOver = false;
 
-        // Initialize enemies and platforms managers
-        this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
         this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
 
-        // Initialize background items
-        this.clouds = getClouds(this.levelWidth, this.floorHeight);
+        // Initialize enemies and design level
+        this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
+        [this.platforms, this.holes]  = gameLevel.createObstacles(this.levelWidth, this.floorHeight);
 
+        // Initialize background items
+        this.clouds = gameLevel.getClouds(this.levelWidth, this.floorHeight);
         this.bushImage.onload = () => {
-            this.bushes = getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
+            this.bushes = gameLevel.getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
         };
+
+        // Load beer image and initialize beer items
         this.beerImage.onload = () => {
-            this.beerItems = getBeers(this.levelWidth, this.floorHeight, this.beerImage.width, this.beerImage.height);
+            this.beerItems = gameLevel.getBeers(this.levelWidth, this.floorHeight, this.beerImage.width, this.beerImage.height);
         };
     }
 
@@ -128,7 +138,16 @@ export class Level {
         this.drawBackgroundItems(context, offsetX);
 
         // Draw platforms
-        this.platformsManager.draw(context, offsetX);
+        this.platforms.forEach(platform => {
+            const brickImage = new Image();
+            brickImage.src = 'brick.png'; // Path to your brick image
+
+            context.drawImage(brickImage, platform.x - offsetX, platform.y, platform.width, platform.height);
+        });
+
+        this.holes.forEach(hole => {
+            this.drawHole(context, offsetX, hole.holeX, hole.holeWidth);
+        });
 
         // Draw beer items
         this.beerItems.forEach(item => {
@@ -142,6 +161,12 @@ export class Level {
 
         // Draw enemies
         this.enemiesManager.draw(context, offsetX);
+    }
+
+    drawHole(context: CanvasRenderingContext2D, offsetX: number, holeX: number, holeWidth: number) {
+        // Draw the hole
+        context.fillStyle = 'black';
+        context.fillRect(holeX - offsetX, this.floorHeight, holeWidth, 40);
     }
 
     drawBackgroundItems(context: CanvasRenderingContext2D, offsetX: number) {

@@ -21,6 +21,9 @@ export class Level {
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
         this.gameLevel = new Level1(this.floorHeight);
 
+
+        document.body.style.backgroundColor = this.gameLevel.skyColor;
+
         this.levelWidth = this.gameLevel.width;
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
@@ -206,7 +209,7 @@ export class Level {
 
     drawHole(context: CanvasRenderingContext2D, offsetX: number, holeX: number, holeWidth: number) {
         // Draw the hole
-        context.fillStyle = 'black';
+        context.fillStyle = this.gameLevel.holesColor;
         context.fillRect(holeX - offsetX, this.floorHeight, holeWidth, 40);
     }
 

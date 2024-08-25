@@ -5,11 +5,14 @@ export interface GameLevel {
     castleImage: HTMLImageElement;
     castleWidth: number;
     castleHeight: number;
+    skyColor: string;
+    holesColor: string;
     getClouds(levelWidth: number, floorHeight: number): BackgroundItem[];
     getBushes(levelWidth: number, floorHeight: number): BackgroundItem[];
     getBeers(levelWidth: number, floorHeight: number): BackgroundItem[];
     createObstacles(levelWidth: number, floorHeight: number): [Platform[], Hole[]];
     createNPCs(levelWidth: number, floorHeight: number): NPC[];
+
 }
 
 export interface NPCData {

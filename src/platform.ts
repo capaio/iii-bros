@@ -103,7 +103,7 @@ export class PlatformsManager {
         });
     }
 
-        draw(context: CanvasRenderingContext2D, offsetX: number) {
+    draw(context: CanvasRenderingContext2D, offsetX: number) {
         this.platforms.forEach(platform => {
             context.drawImage(this.brickImage, platform.x - offsetX, platform.y, platform.width, platform.height);
         });

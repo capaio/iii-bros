@@ -1,6 +1,6 @@
 import { Player } from './player';
 import { EnemiesManager } from './enemies';
-import { PlatformsManager } from './platform';
+
 import { BackgroundItem } from './background';
 import {Level1} from "./levels/level-1";
 import {Hole, Platform} from "./designer/platform.designer";
@@ -20,7 +20,7 @@ export class Level {
     enemiesManager: EnemiesManager;
     platforms: Platform[] = [];
     holes: Hole[] = [];
-    platformsManager: PlatformsManager;
+
     currentScreenOffset: number = 0;
 
     constructor() {
@@ -45,7 +45,6 @@ export class Level {
 
         this.gameOver = false;
 
-        this.platformsManager = new PlatformsManager(this.levelWidth, this.floorHeight);
 
         // Initialize enemies and design level
         this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
@@ -67,7 +66,7 @@ export class Level {
         if (this.gameOver) return;
 
         this.enemiesManager.update(player, this.currentScreenOffset);
-        this.platformsManager.update(player, this.currentScreenOffset);
+        this.checkCollision(player, this.currentScreenOffset);
 
         // Check if the player is actually able to move forward
         // Calculate the max screen offset to stop before the green rectangle (end marker)
@@ -78,7 +77,7 @@ export class Level {
 
         if (playerCanMoveRight) {
             // Only update screen offset if player is moving right and not blocked
-            if (!this.platformsManager.isPlayerBlockedOnRight(player, this.currentScreenOffset)) {
+            if (!this.isPlayerBlockedOnRight(player, this.currentScreenOffset)) {
                 this.currentScreenOffset += player.speed;
             }
         }
@@ -106,6 +105,19 @@ export class Level {
                 return false; // Remove the item
             }
             return true; // Keep the item
+        });
+    }
+
+    isPlayerBlockedOnRight(player: Player, screenOffset: number): boolean {
+        return this.platforms.some(platform => {
+            const adjustedX = platform.x - screenOffset;
+            return (
+                player.velocityX > 0 && // Player is moving to the right
+                player.x + player.width <= adjustedX && // Player's right side is to the left of the platform's left side
+                player.x + player.width + player.velocityX >= adjustedX && // Player's next position would intersect the platform
+                player.y + player.height > platform.y && // Player's bottom is below the platform's top
+                player.y < platform.y + platform.height // Player's top is above the platform's bottom
+            );
         });
     }
 
@@ -178,6 +190,75 @@ export class Level {
         // Draw bushes
         this.bushes.forEach(bush => {
             context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
+        });
+    }
+
+    checkCollision(player: Player, screenOffset: number) {
+        this.platforms.forEach(platform => {
+            const adjustedX = platform.x - screenOffset;
+
+            // Check if the player is landing on top of the platform
+            if (
+                player.velocityY > 0 && // Falling down
+                player.x + player.width > adjustedX && // Player's right side passes platform's left side
+                player.x < adjustedX + platform.width && // Player's left side is before platform's right side
+                player.y + player.height <= platform.y && // Player's feet are above platform
+                player.y + player.height + player.velocityY >= platform.y // Player's feet will be on or below platform
+            ) {
+                // Land on the platform
+                player.y = platform.y - player.height;
+                player.velocityY = 0;
+                player.isOnGround = true;
+            }
+
+            // Check if the player hits the left side of the platform
+            if (
+                player.velocityX > 0 && // Moving right
+                player.x + player.width > adjustedX && // Player's right side is to the right of the platform's left side
+                player.x < adjustedX + platform.width && // Player's left side is to the left of the platform's right side
+                player.y + player.height > platform.y && // Player's bottom is below the platform's top
+                player.y < platform.y + platform.height // Player's top is above the platform's bottom
+            ) {
+                // Collide with the left side
+                player.x = adjustedX - player.width; // Set player position to the left edge of the platform
+                player.velocityX = 0; // Stop the player's horizontal movement
+            }
+
+            // Check if the player hits the right side of the platform
+            if (
+                player.velocityX < 0 && // Moving left
+                player.x < adjustedX + platform.width && // Player's left side touches platform's right side
+                player.x - player.velocityX >= adjustedX + platform.width && // Player's left side was to the right of platform's right side
+                player.y + player.height > platform.y && // Player is not above the platform
+                player.y < platform.y + platform.height // Player is not below the platform
+            ) {
+                // Collide with the right side
+                player.x = adjustedX + platform.width;
+                player.velocityX = 0;
+            }
+
+            // Check if the player hits the bottom of the platform
+            if (
+                player.velocityY < 0 && // Moving up
+                player.x + player.width > adjustedX && // Player's right side is past platform's left side
+                player.x < adjustedX + platform.width && // Player's left side is before platform's right side
+                player.y <= platform.y + platform.height && // Player's head is below the platform's bottom edge
+                player.y > platform.y // Player's head is above the platform's top edge (meaning within the platform's height)
+            ) {
+                // Collide with the bottom
+                player.y = platform.y + platform.height;
+                player.velocityY = 0;
+            }
+        });
+
+        this.holes.forEach(hole => {
+            if (
+                player.x > hole.holeX - screenOffset &&
+                player.x + player.width < hole.holeX - screenOffset + hole.holeWidth &&
+                player.y + player.height >= this.floorHeight
+            ) {
+                player.fall();
+            }
         });
     }
 }

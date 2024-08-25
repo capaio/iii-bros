@@ -1,8 +1,8 @@
-import {BackgroundItem} from "../background";
 import {clouds} from "./level-1/clouds";
 import {bushes} from "./level-1/bushes";
 import {beers} from "./level-1/beers";
-import {Hole, Platform, PlatformDesigner} from "../designer/platform.designer";
+import {BackgroundItem, Hole, Platform, PlatformDesigner} from "../designer/platform.designer";
+import {npcs} from "./level-1/npcs";
 
 export interface GameLevel {
 
@@ -10,13 +10,47 @@ export interface GameLevel {
     getBushes(levelWidth: number, floorHeight: number, width: number, height: number): BackgroundItem[];
     getBeers(levelWidth: number, floorHeight: number, width: number, height: number): BackgroundItem[];
     createObstacles(levelWidth: number, floorHeight: number): void;
+    createNPCs(levelWidth: number, floorHeight: number): void;
 }
 
+export interface NPC {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    image: HTMLImageElement;
+    speed: number;
+    startX: number;
+    endX: number;
+    movingRight: boolean;
+}
 
 export class Level1 implements GameLevel {
 
     width: number =  10 * window.innerWidth;
 
+
+    createNPCs(floorHeight: number, levelWidth: number): NPC[] {
+        const enemyImage = new Image();
+        enemyImage.src = 'enemy.png';
+
+        const width = enemyImage.width * 0.1;
+        const height = enemyImage.height * 0.1;
+
+        return npcs.map(npc => {
+            return {
+                x: npc.x * levelWidth,
+                y: (floorHeight - (npc.y * window.innerHeight)) - height,
+                width: width,
+                height: height,
+                image: enemyImage,
+                speed: 1.5,
+                startX: npc.x * levelWidth,
+                endX: npc.endX * levelWidth,
+                movingRight: true
+            };
+         })
+    }
 
     getClouds(levelWidth: number, floorHeight: number): BackgroundItem[] {
        return clouds.map(cloud => {

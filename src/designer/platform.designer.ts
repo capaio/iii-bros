@@ -10,6 +10,12 @@ export interface Hole {
     holeWidth: number;
 }
 
+export interface BackgroundItem {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
 
 
 export class PlatformDesigner {

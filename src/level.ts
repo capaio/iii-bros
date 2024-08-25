@@ -1,9 +1,7 @@
 import { Player } from './player';
-import { EnemiesManager } from './enemies';
-
-import { BackgroundItem } from './background';
-import {Level1} from "./levels/level-1";
-import {Hole, Platform} from "./designer/platform.designer";
+//import { EnemiesManager } from './enemies';
+import {Level1, NPC} from "./levels/level-1";
+import {BackgroundItem, Hole, Platform} from "./designer/platform.designer";
 
 export class Level {
     beerItems: BackgroundItem[] = [];
@@ -17,9 +15,10 @@ export class Level {
     castleImage: HTMLImageElement;
     beerImage: HTMLImageElement;
     gameOver: boolean;
-    enemiesManager: EnemiesManager;
+    //enemiesManager: EnemiesManager;
     platforms: Platform[] = [];
     holes: Hole[] = [];
+    npcs: NPC[] = [];
 
     currentScreenOffset: number = 0;
 
@@ -47,7 +46,7 @@ export class Level {
 
 
         // Initialize enemies and design level
-        this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
+        //this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
         [this.platforms, this.holes]  = gameLevel.createObstacles(this.levelWidth, this.floorHeight);
 
         // Initialize background items
@@ -60,12 +59,15 @@ export class Level {
         this.beerImage.onload = () => {
             this.beerItems = gameLevel.getBeers(this.levelWidth, this.floorHeight, this.beerImage.width, this.beerImage.height);
         };
+
+        //initialize npcs
+        this.npcs = gameLevel.createNPCs(this.floorHeight, this.levelWidth);
     }
 
     update(player: Player, screenOffset: number) {
         if (this.gameOver) return;
 
-        this.enemiesManager.update(player, this.currentScreenOffset);
+        this.updateNPCs(player, this.currentScreenOffset);
         this.checkCollision(player, this.currentScreenOffset);
 
         // Check if the player is actually able to move forward
@@ -105,6 +107,39 @@ export class Level {
                 return false; // Remove the item
             }
             return true; // Keep the item
+        });
+    }
+
+    updateNPCs(player: Player, screenOffset: number) {
+        if (this.gameOver) return;
+
+        this.npcs.forEach(enemy => {
+            // Adjust the enemy position based on movement direction
+            if (enemy.movingRight) {
+                enemy.x += enemy.speed;
+                if (enemy.x >= enemy.endX) {
+                    enemy.x = enemy.endX;
+                    enemy.movingRight = false; // Change direction to left
+                }
+            } else {
+                enemy.x -= enemy.speed;
+                if (enemy.x <= enemy.startX) {
+                    enemy.x = enemy.startX;
+                    enemy.movingRight = true; // Change direction to right
+                }
+            }
+
+            const adjustedX = enemy.x - screenOffset;
+            if (
+                player.x < adjustedX + enemy.width &&
+                player.x + player.width > adjustedX &&
+                player.y < enemy.y + enemy.height &&
+                player.y + player.height > enemy.y
+            ) {
+                // Player touches enemy
+                player.showGameOver();
+                this.gameOver = true;
+            }
         });
     }
 
@@ -172,7 +207,28 @@ export class Level {
         context.drawImage(this.castleImage, this.endMarkerX - offsetX - castleWidth, this.floorHeight - castleHeight, castleWidth, castleHeight);
 
         // Draw enemies
-        this.enemiesManager.draw(context, offsetX);
+        this.drawNPCs(context, offsetX);
+    }
+
+    drawNPCs(context: CanvasRenderingContext2D, offsetX: number) {
+        console.log(this.npcs[0].x, this.npcs[0].y)
+        this.npcs.forEach(npc => {
+
+            const adjustedX = npc.x - offsetX;
+
+            context.save();
+
+            if (npc.movingRight) {
+                // Flip the image horizontally
+                context.scale(-1, 1);
+                context.drawImage(npc.image, -adjustedX - npc.width, npc.y, npc.width, npc.height);
+            } else {
+                // Draw normally
+                context.drawImage(npc.image, adjustedX, npc.y, npc.width, npc.height);
+            }
+
+            context.restore();
+        });
     }
 
     drawHole(context: CanvasRenderingContext2D, offsetX: number, holeX: number, holeWidth: number) {

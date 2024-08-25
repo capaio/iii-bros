@@ -1,94 +1,98 @@
-import {clouds} from "./level-1/clouds";
-import {bushes} from "./level-1/bushes";
-import {beers} from "./level-1/beers";
-import {BackgroundItem, Hole, Platform, PlatformDesigner} from "../designer/platform.designer";
-import {npcs} from "./level-1/npcs";
+import {PlatformDesigner} from "../designer/platform.designer";
+import {BackgroundItem, Hole, NPC, NPCData, ObjectPosition, ObjectPositionAndDimension, Platform} from "./interfaces";
 
-export interface GameLevel {
 
-    getClouds(levelWidth: number, floorHeight: number): BackgroundItem[];
-    getBushes(levelWidth: number, floorHeight: number, width: number, height: number): BackgroundItem[];
-    getBeers(levelWidth: number, floorHeight: number, width: number, height: number): BackgroundItem[];
-    createObstacles(levelWidth: number, floorHeight: number): void;
-    createNPCs(levelWidth: number, floorHeight: number): void;
-}
-
-export interface NPC {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    image: HTMLImageElement;
-    speed: number;
-    startX: number;
-    endX: number;
-    movingRight: boolean;
-}
-
-export class Level1 implements GameLevel {
+export abstract class LevelAbstract {
 
     width: number =  10 * window.innerWidth;
+    npcs: NPCData[] = [];
+    clouds: ObjectPosition[] = [];
+    bushes: ObjectPositionAndDimension[] = [];
+    beers: ObjectPosition[] = [];
+    floorHeight: number;
+    levelWidth: number;
 
+    protected constructor(floorHeight: number, levelWidth: number, clouds: ObjectPosition[], bushes: ObjectPositionAndDimension[], beers: ObjectPosition[], npcs: NPCData[]) {
+        this.clouds = clouds;
+        this.bushes = bushes;
+        this.beers = beers;
+        this.npcs = npcs;
+        this.floorHeight = floorHeight;
+        this.levelWidth = levelWidth
+    }
 
-    createNPCs(floorHeight: number, levelWidth: number): NPC[] {
-        const enemyImage = new Image();
-        enemyImage.src = 'enemy.png';
+    createNPCs(levelWidth: number, floorHeight: number): NPC[] {
 
-        const width = enemyImage.width * 0.1;
-        const height = enemyImage.height * 0.1;
+        const image = new Image();
+        image.src = 'enemy.png';
 
-        return npcs.map(npc => {
+        const width = image.width * 0.1;
+        const height = image.height * 0.1;
+
+        return this.npcs.map(npc => {
             return {
-                x: npc.x * levelWidth,
+                x: npc.x* levelWidth,
                 y: (floorHeight - (npc.y * window.innerHeight)) - height,
                 width: width,
                 height: height,
-                image: enemyImage,
+                image: image,
                 speed: 1.5,
                 startX: npc.x * levelWidth,
                 endX: npc.endX * levelWidth,
                 movingRight: true
             };
-         })
+        })
     }
 
     getClouds(levelWidth: number, floorHeight: number): BackgroundItem[] {
-       return clouds.map(cloud => {
+        const image = new Image();
+        image.src = 'cloud.png';
+
+        return this.clouds.map(cloud => {
             return {
                 x: cloud.x * levelWidth,
                 y: cloud.y * (floorHeight / 2),
                 width: 100,
-                height: 50
+                height: 50,
+                image
             }
         })
     }
 
-    getBushes(levelWidth: number, floorHeight: number, width: number, height: number): BackgroundItem[] {
+    getBushes(levelWidth: number, floorHeight: number): BackgroundItem[] {
 
-        const newWidth = width * 0.1;
-        const newHeight = height * 0.1;
+        const image = new Image();
+        image.src = 'bush.png';
 
-        return bushes.map(bush => {
+        const newWidth = image.width * 0.1;
+        const newHeight = image.height * 0.1;
+
+        return this.bushes.map(bush => {
             return {
                 x: bush.x * levelWidth,
-                y: bush.y * (floorHeight - newHeight),
+                y: (floorHeight - bush.y * newHeight), //floorHeight - newHeight *2
                 width: bush.width*newWidth ,
-                height: bush.height*newHeight
+                height: bush.height*newHeight,
+                image
             }
         })
     }
 
-    getBeers(levelWidth: number, floorHeight: number, width: number, height: number): BackgroundItem[] {
+    getBeers(levelWidth: number, floorHeight: number): BackgroundItem[] {
 
-        const newWidth = width * 0.05; // 50% smaller
-        const newHeight = height * 0.05;
+        const image = new Image();
+        image.src = 'beer.png';
 
-        return beers.map(beer => {
+        const newWidth = image.width * 0.05; // 50% smaller
+        const newHeight = image.height * 0.05;
+
+        return this.beers.map(beer => {
             return {
                 x: beer.x * (levelWidth - newWidth),
                 y: beer.y * (floorHeight / 2),
                 width: newWidth,
-                height: newHeight
+                height: newHeight,
+                image
             }
         });
     }

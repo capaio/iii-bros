@@ -1,7 +1,6 @@
 import { Player } from './player';
-//import { EnemiesManager } from './enemies';
-import {Level1, NPC} from "./levels/level-1";
-import {BackgroundItem, Hole, Platform} from "./designer/platform.designer";
+import {BackgroundItem, GameLevel, Hole, NPC, Platform} from "./levels/interfaces";
+import {Level1} from "./levels/level-1/level-1";
 
 export class Level {
     beerItems: BackgroundItem[] = [];
@@ -10,61 +9,71 @@ export class Level {
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
-    cloudImage: HTMLImageElement;
-    bushImage: HTMLImageElement;
-    castleImage: HTMLImageElement;
-    beerImage: HTMLImageElement;
+    // cloudImage: HTMLImageElement;
+    // bushImage: HTMLImageElement;
+    // castleImage: HTMLImageElement;
+    // beerImage: HTMLImageElement;
     gameOver: boolean;
     //enemiesManager: EnemiesManager;
     platforms: Platform[] = [];
     holes: Hole[] = [];
     npcs: NPC[] = [];
+    gameLevel: GameLevel
 
     currentScreenOffset: number = 0;
 
     constructor() {
-
-        const gameLevel = new Level1();
-
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
-        this.levelWidth = gameLevel.width;
+        this.gameLevel = new Level1(this.floorHeight);
+
+        this.levelWidth = this.gameLevel.width;
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
-        this.cloudImage = new Image();
-        this.cloudImage.src = 'cloud.png';
-
-        this.bushImage = new Image();
-        this.bushImage.src = 'bush.png';
-
-        this.castleImage = new Image();
-        this.castleImage.src = 'castle.webp'; // Load the castle image
-
-        this.beerImage = new Image();
-        this.beerImage.src = 'beer.png'; // Load the beer image
+        // this.cloudImage = new Image();
+        // this.cloudImage.src = 'cloud.png';
+        //
+        // this.bushImage = new Image();
+        // this.bushImage.src = 'bush.png';
+        //
+        // this.castleImage = new Image();
+        // this.castleImage.src = 'castle.webp'; // Load the castle image
+        //
+        // this.beerImage = new Image();
+        // this.beerImage.src = 'beer.png'; // Load the beer image
 
         this.gameOver = false;
 
 
         // Initialize enemies and design level
         //this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
-        [this.platforms, this.holes]  = gameLevel.createObstacles(this.levelWidth, this.floorHeight);
+        [this.platforms, this.holes]  = this.gameLevel.createObstacles(this.levelWidth, this.floorHeight);
 
         // Initialize background items
-        this.clouds = gameLevel.getClouds(this.levelWidth, this.floorHeight);
-        this.bushImage.onload = () => {
-            this.bushes = gameLevel.getBushes(this.levelWidth, this.floorHeight, this.bushImage.width, this.bushImage.height);
+        this.clouds = this.gameLevel.getClouds(this.levelWidth, this.floorHeight);
+
+        const c = new Image();
+        c.src = 'bush.png';
+        c.onload = () => {
+            this.bushes = this.gameLevel.getBushes(this.levelWidth, this.floorHeight);
         };
 
         // Load beer image and initialize beer items
-        this.beerImage.onload = () => {
-            this.beerItems = gameLevel.getBeers(this.levelWidth, this.floorHeight, this.beerImage.width, this.beerImage.height);
+        const d = new Image();
+        d.src = 'beer.png';
+        d.onload = () => {
+            this.beerItems = this.gameLevel.getBeers(this.levelWidth, this.floorHeight);
         };
 
         //initialize npcs
-        this.npcs = gameLevel.createNPCs(this.floorHeight, this.levelWidth);
+        const e = new Image();
+        e.src = 'enemy.png';
+        e.onload = () => {
+            this.npcs = this.gameLevel.createNPCs(this.levelWidth, this.floorHeight);
+        }
+
     }
 
-    update(player: Player, screenOffset: number) {
+    update(player: Player) {
         if (this.gameOver) return;
 
         this.updateNPCs(player, this.currentScreenOffset);
@@ -92,7 +101,7 @@ export class Level {
         }
 
         // Update background items and check for item collection
-        this.updateBackgroundItems(player);
+        this.updateBackgroundItems();
 
         // Check for beer collection
         this.beerItems = this.beerItems.filter(item => {
@@ -156,7 +165,7 @@ export class Level {
         });
     }
 
-    updateBackgroundItems(player: Player) {
+    updateBackgroundItems() {
         // This method updates background items like clouds and bushes
         this.clouds.forEach(cloud => {
             cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
@@ -182,36 +191,30 @@ export class Level {
         context.fillRect(this.endMarkerX - offsetX, this.floorHeight - 40, 50, 80);
 
         // Draw background items
-        this.drawBackgroundItems(context, offsetX);
+        [...this.clouds, ...this.bushes, ...this.beerItems].forEach(item => {
+            context.drawImage(item.image, item.x - offsetX, item.y, item.width, item.height);
+        });
 
         // Draw platforms
         this.platforms.forEach(platform => {
-            const brickImage = new Image();
-            brickImage.src = 'brick.png'; // Path to your brick image
-
-            context.drawImage(brickImage, platform.x - offsetX, platform.y, platform.width, platform.height);
+            context.drawImage(platform.image, platform.x - offsetX, platform.y, platform.width, platform.height);
         });
 
         this.holes.forEach(hole => {
             this.drawHole(context, offsetX, hole.holeX, hole.holeWidth);
         });
 
-        // Draw beer items
-        this.beerItems.forEach(item => {
-            context.drawImage(this.beerImage, item.x - offsetX, item.y, item.width, item.height);
-        });
 
         // Draw the castle at the end of the level
-        const castleWidth = 350; // Adjust the width of the castle as needed
-        const castleHeight = 300; // Adjust the height of the castle as needed
-        context.drawImage(this.castleImage, this.endMarkerX - offsetX - castleWidth, this.floorHeight - castleHeight, castleWidth, castleHeight);
+        const castleWidth = this.gameLevel.castleWidth; // Adjust the width of the castle as needed
+        const castleHeight = this.gameLevel.castleHeight; // Adjust the height of the castle as needed
+        context.drawImage(this.gameLevel.castleImage, this.endMarkerX - offsetX - castleWidth, this.floorHeight - castleHeight, castleWidth, castleHeight);
 
         // Draw enemies
         this.drawNPCs(context, offsetX);
     }
 
     drawNPCs(context: CanvasRenderingContext2D, offsetX: number) {
-        console.log(this.npcs[0].x, this.npcs[0].y)
         this.npcs.forEach(npc => {
 
             const adjustedX = npc.x - offsetX;
@@ -235,18 +238,6 @@ export class Level {
         // Draw the hole
         context.fillStyle = 'black';
         context.fillRect(holeX - offsetX, this.floorHeight, holeWidth, 40);
-    }
-
-    drawBackgroundItems(context: CanvasRenderingContext2D, offsetX: number) {
-        // Draw clouds
-        this.clouds.forEach(cloud => {
-            context.drawImage(this.cloudImage, cloud.x - offsetX, cloud.y, cloud.width, cloud.height);
-        });
-
-        // Draw bushes
-        this.bushes.forEach(bush => {
-            context.drawImage(this.bushImage, bush.x - offsetX, bush.y, bush.width, bush.height);
-        });
     }
 
     checkCollision(player: Player, screenOffset: number) {

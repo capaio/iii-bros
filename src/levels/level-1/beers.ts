@@ -1,4 +1,6 @@
-export const beers = [
+import {ObjectPosition} from "../interfaces";
+
+export const beers: ObjectPosition[] = [
     {
         x: 0.06 ,
         y: 0.6 ,

@@ -1,4 +1,6 @@
-export const clouds = [
+import {ObjectPosition} from "../interfaces";
+
+export const clouds: ObjectPosition[] = [
     {
         x: 0.01 ,
         y: 0.1 ,

@@ -126,7 +126,7 @@ window.onload = () => {
                     player.x = 0;
                 }
 
-                level.update(player, screenOffset);
+                level.update(player);
 
                 // Check for victory condition
                 if (screenOffset >= maxScreenOffset && player.x >= player.maxX) {

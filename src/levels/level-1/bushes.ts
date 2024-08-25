@@ -7,9 +7,9 @@ export const bushes = [
     },
     {
         x: 0.1 ,
-        y: 1 *2,
-        width: 1.5,
-        height: 1 *2,
+        y: 1.5,
+        width: 1.2,
+        height: 1.5,
     },
     {
         x: 0.35 ,
@@ -19,9 +19,9 @@ export const bushes = [
     },
     {
         x: 0.36 ,
-        y: 1 *2,
+        y: 1.5,
         width:  1.5,
-        height: 1 * 2,
+        height: 1.2,
     },
     {
         x: 0.38 ,
@@ -55,21 +55,21 @@ export const bushes = [
     },
     {
         x: 0.65 ,
-        y: 1 *1.2,
-        width: 1.5,
-        height: 1*1.2,
+        y: 1.5,
+        width: 1.2,
+        height: 1.5,
     },
     {
         x: 0.67 ,
-        y: 1 *1.2,
-        width: 1.5,
-        height: 1*1.2,
+        y: 1.5,
+        width: 1.2,
+        height: 1.5,
     },
     {
         x: 0.68 ,
-        y: 1 *1.2,
-        width: 1.5,
-        height: 1*1.2,
+        y: 1.5,
+        width: 1.2,
+        height: 1.5,
     },
     {
         x: 0.89 ,

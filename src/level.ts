@@ -9,12 +9,7 @@ export class Level {
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
-    // cloudImage: HTMLImageElement;
-    // bushImage: HTMLImageElement;
-    // castleImage: HTMLImageElement;
-    // beerImage: HTMLImageElement;
     gameOver: boolean;
-    //enemiesManager: EnemiesManager;
     platforms: Platform[] = [];
     holes: Hole[] = [];
     npcs: NPC[] = [];
@@ -29,47 +24,19 @@ export class Level {
         this.levelWidth = this.gameLevel.width;
         this.endMarkerX = this.levelWidth - 50; // Position of the end marker
 
-        // this.cloudImage = new Image();
-        // this.cloudImage.src = 'cloud.png';
-        //
-        // this.bushImage = new Image();
-        // this.bushImage.src = 'bush.png';
-        //
-        // this.castleImage = new Image();
-        // this.castleImage.src = 'castle.webp'; // Load the castle image
-        //
-        // this.beerImage = new Image();
-        // this.beerImage.src = 'beer.png'; // Load the beer image
-
         this.gameOver = false;
 
-
         // Initialize enemies and design level
-        //this.enemiesManager = new EnemiesManager(this.levelWidth, this.floorHeight);
         [this.platforms, this.holes]  = this.gameLevel.createObstacles(this.levelWidth, this.floorHeight);
 
         // Initialize background items
         this.clouds = this.gameLevel.getClouds(this.levelWidth, this.floorHeight);
+        this.bushes = this.gameLevel.getBushes(this.levelWidth, this.floorHeight);
+        this.beerItems = this.gameLevel.getBeers(this.levelWidth, this.floorHeight);
 
-        const c = new Image();
-        c.src = 'bush.png';
-        c.onload = () => {
-            this.bushes = this.gameLevel.getBushes(this.levelWidth, this.floorHeight);
-        };
+        // Initialize npcs
+        this.npcs = this.gameLevel.createNPCs(this.levelWidth, this.floorHeight);
 
-        // Load beer image and initialize beer items
-        const d = new Image();
-        d.src = 'beer.png';
-        d.onload = () => {
-            this.beerItems = this.gameLevel.getBeers(this.levelWidth, this.floorHeight);
-        };
-
-        //initialize npcs
-        const e = new Image();
-        e.src = 'enemy.png';
-        e.onload = () => {
-            this.npcs = this.gameLevel.createNPCs(this.levelWidth, this.floorHeight);
-        }
 
     }
 
@@ -78,6 +45,7 @@ export class Level {
 
         this.updateNPCs(player, this.currentScreenOffset);
         this.checkCollision(player, this.currentScreenOffset);
+        this.updateBackgroundItems();
 
         // Check if the player is actually able to move forward
         // Calculate the max screen offset to stop before the green rectangle (end marker)
@@ -100,8 +68,6 @@ export class Level {
             this.currentScreenOffset = maxScreenOffset;
         }
 
-        // Update background items and check for item collection
-        this.updateBackgroundItems();
 
         // Check for beer collection
         this.beerItems = this.beerItems.filter(item => {
@@ -171,12 +137,16 @@ export class Level {
             cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
         });
 
-        // Check if any bushes have scrolled off the screen and reset their position
         this.bushes.forEach(bush => {
-            if (bush.x - this.currentScreenOffset < -bush.width) {
-                bush.x += this.levelWidth; // Move bush to the end of the level
+            bush.image.onload = () => {
+            };
+        });
+
+        this.beerItems.forEach(beer => {
+            beer.image.onload = () => {
             }
         });
+
     }
 
     draw(context: CanvasRenderingContext2D) {

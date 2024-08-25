@@ -16,6 +16,8 @@ export class Level1 extends LevelAbstract implements GameLevel {
         const levelWidth: number =  10 * window.innerWidth;
         super(floorHeight, levelWidth, clouds, bushes, beers, npcs);
         this.castleImage.src = 'castle.webp';
+        document.body.style.backgroundColor = '#000006';
+
     }
 
 }

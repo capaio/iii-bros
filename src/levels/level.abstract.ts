@@ -2,6 +2,7 @@ import {PlatformDesigner} from "../designer/platform.designer";
 import {BackgroundItem, Hole, NPC, NPCData, ObjectPosition, ObjectPositionAndDimension, Platform} from "./interfaces";
 import {Collectible} from "../items/items/collectible";
 import {Bush} from "../items/items/bush";
+import {Item} from "../items/interface";
 
 
 export abstract class LevelAbstract {
@@ -61,13 +62,13 @@ export abstract class LevelAbstract {
         })
     }
 
-    getBushes(levelWidth: number, floorHeight: number): BackgroundItem[] {
+    getBushes(levelWidth: number, floorHeight: number): Item[] {
         return this.bushes.map(bush => {
             return new Bush(bush.x * levelWidth, bush.y, floorHeight, bush.width, bush.height );
         })
     }
 
-    getBeers(levelWidth: number, floorHeight: number): BackgroundItem[] {
+    getBeers(levelWidth: number, floorHeight: number): Item[] {
         return this.beers.map(beer => {
             return new Collectible(beer.x * (levelWidth), beer.y * (floorHeight / 2));
         });

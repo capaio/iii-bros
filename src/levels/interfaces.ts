@@ -1,3 +1,4 @@
+import {Item} from "../items/interface";
 
 
 export interface GameLevel {
@@ -8,8 +9,8 @@ export interface GameLevel {
     skyColor: string;
     holesColor: string;
     getClouds(levelWidth: number, floorHeight: number): BackgroundItem[];
-    getBushes(levelWidth: number, floorHeight: number): BackgroundItem[];
-    getBeers(levelWidth: number, floorHeight: number): BackgroundItem[];
+    getBushes(levelWidth: number, floorHeight: number): Item[];
+    getBeers(levelWidth: number, floorHeight: number): Item[];
     createObstacles(levelWidth: number, floorHeight: number): [Platform[], Hole[]];
     createNPCs(levelWidth: number, floorHeight: number): NPC[];
 

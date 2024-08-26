@@ -1,11 +1,12 @@
 import { Player } from './player';
 import {BackgroundItem, GameLevel, Hole, NPC, Platform} from "./levels/interfaces";
 import {Level1} from "./levels/level-1/level-1";
+import {Item} from "./items/interface";
 
 export class Level {
-    beerItems: BackgroundItem[] = [];
+    beerItems: Item[] = [];
     clouds: BackgroundItem[] = [];
-    bushes: BackgroundItem[] = [];
+    bushes: Item[] = [];
     floorHeight: number;
     levelWidth: number;
     endMarkerX: number;
@@ -140,15 +141,9 @@ export class Level {
             cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
         });
 
-        // this.bushes.forEach(bush => {
-        //     bush.image.onload = () => {
-        //     };
-        // });
-        //
-        // this.beerItems.forEach(beer => {
-        //     beer.image.onload = () => {
-        //     }
-        // });
+        [...this.bushes, ...this.beerItems].forEach(bush => {
+            bush.update(this.currentScreenOffset);
+        })
 
     }
 

@@ -140,15 +140,15 @@ export class Level {
             cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
         });
 
-        this.bushes.forEach(bush => {
-            bush.image.onload = () => {
-            };
-        });
-
-        this.beerItems.forEach(beer => {
-            beer.image.onload = () => {
-            }
-        });
+        // this.bushes.forEach(bush => {
+        //     bush.image.onload = () => {
+        //     };
+        // });
+        //
+        // this.beerItems.forEach(beer => {
+        //     beer.image.onload = () => {
+        //     }
+        // });
 
     }
 

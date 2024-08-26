@@ -3,14 +3,24 @@ import {Item} from "../interface";
 
 export class Bush extends AbstractItem  implements Item {
 
-    constructor(x: number, y: number, width?: number, height?: number) {
+    constructor(x: number, y: number, floorHeight: number, width?: number, height?: number) {
 
         const image = new Image();
         image.src = 'bush.png';
 
+        const defaultWidth = 0.10 * window.innerWidth;
+        const defaultHeight = 0.20 * window.innerHeight;
 
+        const newWidth = width ? width * defaultWidth : defaultWidth
+        const newHeight = height ? height * defaultHeight : defaultHeight
 
-        super(x, y, image.width * 0.1, image.height * 0.1, image);
+        super(
+            x,
+            (floorHeight - y * newHeight),
+            newWidth,
+            newHeight,
+            image)
+        ;
     }
 
 

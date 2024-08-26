@@ -1,5 +1,7 @@
 import {PlatformDesigner} from "../designer/platform.designer";
 import {BackgroundItem, Hole, NPC, NPCData, ObjectPosition, ObjectPositionAndDimension, Platform} from "./interfaces";
+import {Collectible} from "../items/items/collectible";
+import {Bush} from "../items/items/bush";
 
 
 export abstract class LevelAbstract {
@@ -60,40 +62,14 @@ export abstract class LevelAbstract {
     }
 
     getBushes(levelWidth: number, floorHeight: number): BackgroundItem[] {
-
-        const image = new Image();
-        image.src = 'bush.png';
-
-        const newWidth = image.width * 0.1;
-        const newHeight = image.height * 0.1;
-
         return this.bushes.map(bush => {
-            return {
-                x: bush.x * levelWidth,
-                y: (floorHeight - bush.y * newHeight), //floorHeight - newHeight *2
-                width: bush.width*newWidth ,
-                height: bush.height*newHeight,
-                image
-            }
+            return new Bush(bush.x * levelWidth, bush.y, floorHeight, bush.width, bush.height );
         })
     }
 
     getBeers(levelWidth: number, floorHeight: number): BackgroundItem[] {
-
-        const image = new Image();
-        image.src = 'beer.png';
-
-        const newWidth = image.width * 0.05; // 50% smaller
-        const newHeight = image.height * 0.05;
-
         return this.beers.map(beer => {
-            return {
-                x: beer.x * (levelWidth - newWidth),
-                y: beer.y * (floorHeight / 2),
-                width: newWidth,
-                height: newHeight,
-                image
-            }
+            return new Collectible(beer.x * (levelWidth), beer.y * (floorHeight / 2));
         });
     }
 

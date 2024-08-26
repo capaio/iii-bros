@@ -27,36 +27,14 @@ export abstract class LevelAbstract {
     }
 
     createNPCs(levelWidth: number, floorHeight: number): NPC[] {
-
-        // const image = new Image();
-        // image.src = 'enemy.png';
-        //
-        // const width = image.width * 0.1;
-        // const height = image.height * 0.1;
-
         return this.npcs.map(npc => {
             return new Turtle(npc.x* levelWidth, npc.y, floorHeight, npc.speed, npc.x * levelWidth, npc.endX * levelWidth, true)
         });
 
-        // return this.npcs.map(npc => {
-        //     return {
-        //         x: npc.x* levelWidth,
-        //         y: (floorHeight - (npc.y * window.innerHeight)) - height,
-        //         width: width,
-        //         height: height,
-        //         image: image,
-        //         speed: 1.5,
-        //         startX: npc.x * levelWidth,
-        //         endX: npc.endX * levelWidth,
-        //         movingRight: true
-        //     };
-        // })
+
     }
 
     getClouds(levelWidth: number, floorHeight: number): Item[] {
-        // const image = new Image();
-        // image.src = 'cloud.png';
-
         return this.clouds.map(cloud => {
             return new Cloud(cloud.x * levelWidth, cloud.y * (floorHeight / 2))
         })

@@ -1,6 +1,7 @@
 import {AbstractItem} from "../abstract.item";
 import {Item, NPC} from "../interface";
 import {Player} from "../../player";
+import {config} from "../../config";
 
 export class Turtle extends AbstractItem  implements NPC {
 
@@ -12,10 +13,10 @@ export class Turtle extends AbstractItem  implements NPC {
     constructor(x: number, y: number, floorHeight: number, speed: number, startX: number, endX: number,movingRight: boolean, width?: number, height?: number ) {
 
         const image = new Image();
-        image.src = 'enemy.png';
+        image.src = config.npcs.turtle.image;
 
-        const widthScaled = window.innerWidth * 0.1;
-        const heightScaled= window.innerHeight * 0.1;
+        const widthScaled = window.innerWidth * config.npcs.turtle.width;
+        const heightScaled= window.innerHeight * config.npcs.turtle.height;
 
         super(
             x,

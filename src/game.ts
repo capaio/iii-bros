@@ -1,6 +1,7 @@
 import { Player } from './player';
 import { Level } from './level';
 import { Firework } from './firework';
+import {config} from "./config";
 
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -37,7 +38,7 @@ window.onload = () => {
     let screenOffset = 0;
     let gameOver = false;
     let victory = false;
-    let timeLeft = 99;
+    let timeLeft = config.time;
 
     splashMusic.play();
 
@@ -88,11 +89,11 @@ window.onload = () => {
         let officialTimer: NodeJS.Timeout;
 
         screenOffset = 0;
-        timeLeft = 99;
+        timeLeft = config.time;
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const totalLevels: number = 2;
+        const totalLevels: number = config.totalLevels
 
         const player = new Player(gameMusic);
         let level = new Level(currentLevel);
@@ -106,7 +107,7 @@ window.onload = () => {
 
             if(levelCompleted) {
                 showLevelCompletedScreen();
-                timeLeft = 99;
+                timeLeft = config.time;
                 setTimeout(() => {
                     victorySound.pause();
                     hideLevelCompletedScreen();
@@ -303,24 +304,6 @@ window.onload = () => {
             const nextFireworkTime = Math.random() * 400 + 100; // Random time between 0.1 and 0.5 seconds
             setTimeout(createFirework, nextFireworkTime);
         };
-
-        // Touch controls for canvas
-        // canvas.addEventListener('touchstart', (e) => {
-        //     const touch = e.touches[0];
-        //     if (touch.clientX < canvas.width / 2) {
-        //         isMovingLeft = true;
-        //         player.moveLeft();
-        //     } else {
-        //         isMovingRight = true;
-        //         player.moveRight();
-        //     }
-        // });
-
-        // canvas.addEventListener('touchend', () => {
-        //     isMovingLeft = false;
-        //     isMovingRight = false;
-        //     player.stop();
-        // });
 
         window.addEventListener('keydown', (e) => onKeyDown(e));
         window.addEventListener('keyup', (e) => onKeyUp(e));

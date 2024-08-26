@@ -83,88 +83,114 @@ window.onload = () => {
         isMusicPlaying = !isMusicPlaying;
     });
 
-    const startGame = () => {
+    const startGame = (currentLevel: number = 0) => {
+
+        let officialTimer: NodeJS.Timeout;
+
+        screenOffset = 0;
+        timeLeft = 99;
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        const totalLevels: number = 2;
+
         const player = new Player(gameMusic);
-        const level = new Level(0);
+        let level = new Level(currentLevel);
         let score = 0;
         let isMovingLeft = false;
         let isMovingRight = false;
 
+        let levelCompleted = false
+
         const gameLoop = () => {
-            context.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (!gameOver && !victory) {
-                const maxScreenOffset = level.endMarkerX - canvas.width;
+            if(levelCompleted) {
+                showLevelCompletedScreen();
+                timeLeft = 99;
+                setTimeout(() => {
+                    victorySound.pause();
+                    hideLevelCompletedScreen();
+                    clearTimeout(officialTimer);
+                    return startGame(currentLevel + 1)
+                }, 3000);
+            } else {
 
-                // Adjust offset based on movement direction
-                if (isMovingRight && screenOffset < maxScreenOffset) {
-                    screenOffset += player.speed;
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (!gameOver && !victory) {
+                    const maxScreenOffset = level.endMarkerX - canvas.width;
+
+                    // Adjust offset based on movement direction
+                    if (isMovingRight && screenOffset < maxScreenOffset) {
+                        screenOffset += player.speed;
+                    }
+
+                    // Ensure the screen offset does not go negative or beyond the end marker
+                    if (screenOffset < 0) {
+                        screenOffset = 0;
+                    } else if (screenOffset > maxScreenOffset) {
+                        screenOffset = maxScreenOffset;
+                    }
+
+                    // Adjust player's maxX based on the screenOffset
+                    if (screenOffset >= maxScreenOffset) {
+                        player.maxX = 0.7 * canvas.width;
+                    } else {
+                        player.maxX = 0.4 * canvas.width;
+                    }
+
+                    // Update the player's position
+                    player.update(level.levelWidth);
+
+                    // Ensure the player does not go back behind position 0
+                    if (player.x < 0) {
+                        player.x = 0;
+                    }
+
+                    level.update(player);
+
+                    // Check for victory condition
+                    if (screenOffset >= maxScreenOffset && player.x >= player.maxX) {
+                        if (currentLevel < totalLevels - 1) {
+                            levelCompleted = true
+                        } else {
+                            victory = true;
+                            showVictoryScreen();
+                        }
+                    }
                 }
 
-                // Ensure the screen offset does not go negative or beyond the end marker
-                if (screenOffset < 0) {
-                    screenOffset = 0;
-                } else if (screenOffset > maxScreenOffset) {
-                    screenOffset = maxScreenOffset;
+                // Pass screenOffset to level.draw
+                level.draw(context);
+                player.draw(context);
+
+                // Draw fireworks if victory
+                if (victory) {
+                    for (const firework of fireworks) {
+                        firework.update();
+                        firework.draw(context);
+                    }
+
+                    // Remove dead fireworks
+                    fireworks = fireworks.filter(firework => firework.isAlive());
                 }
 
-                // Adjust player's maxX based on the screenOffset
-                if (screenOffset >= maxScreenOffset) {
-                    player.maxX = 0.7 * canvas.width;
-                } else {
-                    player.maxX = 0.4 * canvas.width;
-                }
+                // Update and draw score
+                scoreDisplay.textContent = score.toString().padStart(3, '0');
 
-                // Update the player's position
-                player.update(level.levelWidth);
-
-                // Ensure the player does not go back behind position 0
-                if (player.x < 0) {
-                    player.x = 0;
-                }
-
-                level.update(player);
-
-                // Check for victory condition
-                if (screenOffset >= maxScreenOffset && player.x >= player.maxX) {
-                    victory = true;
-                    showVictoryScreen();
-                }
+                requestAnimationFrame(gameLoop);
             }
-
-            // Pass screenOffset to level.draw
-            level.draw(context);
-            player.draw(context);
-
-            // Draw fireworks if victory
-            if (victory) {
-                for (const firework of fireworks) {
-                    firework.update();
-                    firework.draw(context);
-                }
-
-                // Remove dead fireworks
-                fireworks = fireworks.filter(firework => firework.isAlive());
-            }
-
-            // Update and draw score
-            scoreDisplay.textContent = score.toString().padStart(3, '0');
-
-            requestAnimationFrame(gameLoop);
         };
 
         const updateTimer = () => {
-            if (!gameOver && !victory) {
+            if (!gameOver && !victory && !levelCompleted) {
                 timeLeft -= 1;
                 timerDisplay.textContent = `Time: ${timeLeft}`;
                 if (timeLeft <= 0) {
                     gameOver = true;
                     player.showGameOver();
                 } else {
-                    setTimeout(updateTimer, 1000);
+                    officialTimer = setTimeout(updateTimer, 1000);
                 }
             }
         };
@@ -217,6 +243,44 @@ window.onload = () => {
             createFirework();
 
             window.dispatchEvent(new Event('victory'));
+        };
+
+        const hideLevelCompletedScreen = () => {
+            const levelCompletedScreen = document.getElementById('levelcompleted');
+            if (levelCompletedScreen) {
+                levelCompletedScreen.remove();
+            }
+        }
+
+        const showLevelCompletedScreen = () => {
+            const victoryText = document.createElement('div');
+            victoryText.id = 'levelcompleted'
+            victoryText.innerText = 'LEVEL COMPLETED';
+            victoryText.style.position = 'absolute';
+            victoryText.style.top = '50%';
+            victoryText.style.left = '50%';
+            victoryText.style.transform = 'translate(-50%, -50%)';
+            victoryText.style.fontSize = '48px';
+            victoryText.style.color = 'black';
+            victoryText.style.fontFamily = '"Press Start 2P", cursive';
+            victoryText.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+            victoryText.style.border = '2px solid black';
+            victoryText.style.padding = '20px';
+            victoryText.style.textAlign = 'center';
+
+            const codeText = document.createElement('div');
+            codeText.innerText = 'But your journey is not over yet!';
+            codeText.style.fontSize = '24px';
+            codeText.style.marginTop = '10px';
+            victoryText.appendChild(codeText);
+
+            document.body.appendChild(victoryText);
+
+            // Stop all other music and play victory sound
+            splashMusic.pause();
+            gameMusic.pause();
+            victorySound.play();
+
         };
 
         let countFireworksSound = 0

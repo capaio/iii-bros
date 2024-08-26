@@ -138,12 +138,6 @@ export class Level {
         });
     }
 
-    updateBackgroundItems() {
-
-
-
-    }
-
     draw(context: CanvasRenderingContext2D) {
         const offsetX = this.currentScreenOffset;
 

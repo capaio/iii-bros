@@ -49,7 +49,11 @@ export class Level {
 
         this.updateNPCs(player, this.currentScreenOffset);
         this.checkCollision(player, this.currentScreenOffset);
-        this.updateBackgroundItems();
+
+        //update items
+        [...this.bushes, ...this.beerItems, ...this.clouds].forEach(item => {
+            item.update();
+        })
 
         // Check if the player is actually able to move forward
         // Calculate the max screen offset to stop before the green rectangle (end marker)
@@ -137,9 +141,7 @@ export class Level {
 
     updateBackgroundItems() {
 
-        [...this.bushes, ...this.beerItems, ...this.clouds].forEach(item => {
-            item.update();
-        })
+
 
     }
 

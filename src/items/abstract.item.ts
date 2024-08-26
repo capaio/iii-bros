@@ -15,9 +15,7 @@ export class AbstractItem {
         this.height = height
     }
 
-    update() {
-
-    }
+    update() {}
 
     draw(context: CanvasRenderingContext2D) {
         context.drawImage(this.image, this.x, this.y, this.width, this.height);

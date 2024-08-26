@@ -5,8 +5,8 @@ export class Player {
     height: number;
     velocityY: number = 0;
     velocityX: number = 0;
-    speed: number = 5;
-    gravity: number = 0.5;
+    speed: number = 0.007 * window.innerWidth;
+    gravity: number = 0.0035 * window.innerHeight;
     jumpStrength: number;
     isOnGround: boolean = false;
     image: HTMLImageElement;
@@ -34,36 +34,15 @@ export class Player {
             this.width = this.height * this.aspectRatio; // Maintain the aspect ratio
         };
 
-        this.jumpStrength = 16; // Jump height is twice the character height
+        this.jumpStrength = 0.072 * window.innerHeight;
 
         this.jumpSound = document.getElementById('jumpSound') as HTMLAudioElement;
         this.gameOverSound = new Audio('gameover.mp3'); // Initialize game over sound
 
         this.maxX = 0.4 * window.innerWidth; // Initially, the player can move up to 40% of the screen width
 
-        // window.addEventListener('keydown', (e) => this.onKeyDown(e));
-        // window.addEventListener('keyup', (e) => this.onKeyUp(e));
     }
 
-    // onKeyDown(e: KeyboardEvent) {
-    //     if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
-    //
-    //     if (e.code === 'ArrowLeft') {
-    //         this.moveLeft();
-    //     } else if (e.code === 'ArrowRight') {
-    //         this.moveRight();
-    //     } else if (e.code === 'Space') {
-    //         this.jump();
-    //     }
-    // }
-
-    // onKeyUp(e: KeyboardEvent) {
-    //     if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over
-    //
-    //     if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-    //         this.stop();
-    //     }
-    // }
 
     moveLeft() {
         if (this.isFalling || this.gameOver) return; // Disable controls if falling or game over

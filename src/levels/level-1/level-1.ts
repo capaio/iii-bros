@@ -9,9 +9,9 @@ import {GameLevel} from "../interfaces";
 export class Level1 extends LevelAbstract implements GameLevel {
 
     castleImage: HTMLImageElement = new Image();
-    castleWidth: number = 350; // Adjust the width of the castle as needed
-    castleHeight: number = 300; // Adjust the height of the castle as needed
-    skyColor: string = '#000006';
+    castleWidth: number = 0.35 * window.innerWidth;
+    castleHeight: number = 0.5 * window.innerHeight;
+    skyColor: string = 'turquoise';
     holesColor: string = 'red';
 
     constructor(floorHeight: number) {

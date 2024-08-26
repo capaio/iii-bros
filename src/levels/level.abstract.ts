@@ -84,24 +84,24 @@ export abstract class LevelAbstract {
 
         platforms.push(platformDesigner.upwardStaircase(4, 0.03 * levelWidth));
         let start = 0.03 * levelWidth + 5 * moduleWidth;
-        holes.push(platformDesigner.hole(start, 100))
-        platforms.push(platformDesigner.downwardStaircase(4, start + 100));
+        holes.push(platformDesigner.hole(start, 0.015 * levelWidth))
+        platforms.push(platformDesigner.downwardStaircase(4, start + 0.015 * levelWidth));
 
-        holes.push(platformDesigner.hole(0.15 * levelWidth - 100, (7*moduleWidth) + 100))
+        holes.push(platformDesigner.hole(0.15 * levelWidth - 100, (7*moduleWidth) + 0.01 * levelWidth))
         platforms.push(platformDesigner.platform(6, 0.15 * levelWidth, floorHeight - (0.4 * window.innerHeight)));
 
         platforms.push(platformDesigner.platform(4, 0.2 * levelWidth, floorHeight - (0.2 * window.innerHeight)));
         platforms.push(platformDesigner.platform(4, 0.22 * levelWidth, floorHeight - (0.3 * window.innerHeight)));
         platforms.push(platformDesigner.platform(4, 0.24 * levelWidth, floorHeight - (0.4 * window.innerHeight)));
 
-        holes.push(platformDesigner.hole(0.26 * levelWidth - 50, (7*moduleWidth) ))
+        holes.push(platformDesigner.hole(0.26 * levelWidth - 50, (6*moduleWidth) ))
 
         platforms.push(platformDesigner.upwardStaircase(4, 0.29 * levelWidth));
         start = 0.29 * levelWidth + 5 * moduleWidth;
-        holes.push(platformDesigner.hole(start, 100))
+        holes.push(platformDesigner.hole(start, 0.015 * levelWidth))
 
 
-        holes.push(platformDesigner.hole(0.42 * levelWidth, 800))
+        holes.push(platformDesigner.hole(0.42 * levelWidth, 0.095 * levelWidth))
         platforms.push(platformDesigner.platform(2, 0.44 * levelWidth, floorHeight - (0.2 * window.innerHeight)));
         platforms.push(platformDesigner.platform(2, 0.46 * levelWidth, floorHeight - (0.4 * window.innerHeight)));
         platforms.push(platformDesigner.platform(2, 0.48 * levelWidth, floorHeight - (0.4 * window.innerHeight)));
@@ -117,11 +117,11 @@ export abstract class LevelAbstract {
 
         platforms.push(platformDesigner.upwardStaircase(4, 0.71 * levelWidth));
         start = 0.71 * levelWidth + 5 * moduleWidth;
-        holes.push(platformDesigner.hole(start, 150))
-        platforms.push(platformDesigner.downwardStaircase(4, start + 150));
+        holes.push(platformDesigner.hole(start, 0.015 * levelWidth))
+        platforms.push(platformDesigner.downwardStaircase(4, start + 0.015 * levelWidth));
 
 
-        holes.push(platformDesigner.hole(0.79 * levelWidth, 900 ))
+        holes.push(platformDesigner.hole(0.79 * levelWidth, (20*moduleWidth) ))
         platforms.push(platformDesigner.platform(1, (0.79 * levelWidth) + (2*moduleWidth), floorHeight - (0.1 * window.innerHeight)));
         platforms.push(platformDesigner.platform(1, (0.79 * levelWidth) + (5*moduleWidth), floorHeight - (0.1 * window.innerHeight)));
         platforms.push(platformDesigner.platform(1, (0.79 * levelWidth) + (8*moduleWidth), floorHeight - (0.1 * window.innerHeight)));

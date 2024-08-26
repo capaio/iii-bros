@@ -25,7 +25,7 @@ export class Turtle extends AbstractItem  implements NPC {
             image)
         ;
 
-        this.speed = speed;
+        this.speed = speed * window.innerWidth;
         this.endX = endX;
         this.startX = startX;
         this.movingRight = movingRight;

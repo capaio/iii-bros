@@ -8,7 +8,7 @@ export class Cloud extends AbstractItem  implements Item {
         const image = new Image();
         image.src = 'cloud.png';
 
-        super(x, y, 100, 50, image);
+        super(x, y, 0.12* window.innerWidth, 0.12*window.innerHeight, image);
     }
 
     update(screenOffset: number) {

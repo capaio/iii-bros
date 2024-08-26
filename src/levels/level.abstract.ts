@@ -3,6 +3,7 @@ import {BackgroundItem, Hole, NPC, NPCData, ObjectPosition, ObjectPositionAndDim
 import {Collectible} from "../items/items/collectible";
 import {Bush} from "../items/items/bush";
 import {Item} from "../items/interface";
+import {Cloud} from "../items/items/cloud";
 
 
 export abstract class LevelAbstract {
@@ -47,18 +48,12 @@ export abstract class LevelAbstract {
         })
     }
 
-    getClouds(levelWidth: number, floorHeight: number): BackgroundItem[] {
-        const image = new Image();
-        image.src = 'cloud.png';
+    getClouds(levelWidth: number, floorHeight: number): Item[] {
+        // const image = new Image();
+        // image.src = 'cloud.png';
 
         return this.clouds.map(cloud => {
-            return {
-                x: cloud.x * levelWidth,
-                y: cloud.y * (floorHeight / 2),
-                width: 100,
-                height: 50,
-                image
-            }
+            return new Cloud(cloud.x * levelWidth, cloud.y * (floorHeight / 2))
         })
     }
 

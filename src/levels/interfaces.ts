@@ -8,7 +8,7 @@ export interface GameLevel {
     castleHeight: number;
     skyColor: string;
     holesColor: string;
-    getClouds(levelWidth: number, floorHeight: number): BackgroundItem[];
+    getClouds(levelWidth: number, floorHeight: number): Item[];
     getBushes(levelWidth: number, floorHeight: number): Item[];
     getBeers(levelWidth: number, floorHeight: number): Item[];
     createObstacles(levelWidth: number, floorHeight: number): [Platform[], Hole[]];

@@ -5,7 +5,7 @@ import {Item} from "./items/interface";
 
 export class Level {
     beerItems: Item[] = [];
-    clouds: BackgroundItem[] = [];
+    clouds: Item[] = [];
     bushes: Item[] = [];
     floorHeight: number;
     levelWidth: number;
@@ -137,11 +137,11 @@ export class Level {
 
     updateBackgroundItems() {
         // This method updates background items like clouds and bushes
-        this.clouds.forEach(cloud => {
-            cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
-        });
+        // this.clouds.forEach(cloud => {
+        //     cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
+        // });
 
-        [...this.bushes, ...this.beerItems].forEach(bush => {
+        [...this.bushes, ...this.beerItems, ...this.clouds].forEach(bush => {
             bush.update(this.currentScreenOffset);
         })
 

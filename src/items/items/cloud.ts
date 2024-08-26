@@ -1,5 +1,6 @@
 import {AbstractItem} from "../abstract.item";
 import {Item} from "../interface";
+import {Player} from "../../player";
 
 export class Cloud extends AbstractItem  implements Item {
 
@@ -11,7 +12,7 @@ export class Cloud extends AbstractItem  implements Item {
         super(x, y, 0.12* window.innerWidth, 0.12*window.innerHeight, image);
     }
 
-    update(screenOffset: number) {
+    update( ) {
         this.x -= 0.2;
     }
 

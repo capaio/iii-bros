@@ -1,7 +1,7 @@
 import { Player } from './player';
-import {BackgroundItem, GameLevel, Hole, NPC, Platform} from "./levels/interfaces";
+import {GameLevel, Hole,  Platform} from "./levels/interfaces";
 import {Level1} from "./levels/level-1/level-1";
-import {Item} from "./items/interface";
+import {Item, NPC} from "./items/interface";
 
 export class Level {
     beerItems: Item[] = [];
@@ -136,13 +136,9 @@ export class Level {
     }
 
     updateBackgroundItems() {
-        // This method updates background items like clouds and bushes
-        // this.clouds.forEach(cloud => {
-        //     cloud.x -= 0.2; // Slightly move clouds to the left for a parallax effect
-        // });
 
-        [...this.bushes, ...this.beerItems, ...this.clouds].forEach(bush => {
-            bush.update(this.currentScreenOffset);
+        [...this.bushes, ...this.beerItems, ...this.clouds].forEach(item => {
+            item.update();
         })
 
     }
@@ -183,8 +179,7 @@ export class Level {
     }
 
     drawNPCs(context: CanvasRenderingContext2D, offsetX: number) {
-        this.npcs.forEach(npc => {
-
+        this.npcs.forEach((npc) => {
             const adjustedX = npc.x - offsetX;
 
             context.save();

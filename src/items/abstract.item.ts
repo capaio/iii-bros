@@ -1,3 +1,5 @@
+import {Player} from "../player";
+
 export class AbstractItem {
     x: number;
     y: number;
@@ -13,8 +15,8 @@ export class AbstractItem {
         this.height = height
     }
 
-    update(screenOffset: number) {
-        //this.x -= screenOffset;
+    update() {
+
     }
 
     draw(context: CanvasRenderingContext2D) {

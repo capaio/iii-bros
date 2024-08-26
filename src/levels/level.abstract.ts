@@ -1,9 +1,10 @@
 import {PlatformDesigner} from "../designer/platform.designer";
-import {BackgroundItem, Hole, NPC, NPCData, ObjectPosition, ObjectPositionAndDimension, Platform} from "./interfaces";
+import {Hole,  NPCData, ObjectPosition, ObjectPositionAndDimension, Platform} from "./interfaces";
 import {Collectible} from "../items/items/collectible";
 import {Bush} from "../items/items/bush";
-import {Item} from "../items/interface";
+import {Item, NPC} from "../items/interface";
 import {Cloud} from "../items/items/cloud";
+import {Turtle} from "../items/items/turtle";
 
 
 export abstract class LevelAbstract {
@@ -27,25 +28,29 @@ export abstract class LevelAbstract {
 
     createNPCs(levelWidth: number, floorHeight: number): NPC[] {
 
-        const image = new Image();
-        image.src = 'enemy.png';
-
-        const width = image.width * 0.1;
-        const height = image.height * 0.1;
+        // const image = new Image();
+        // image.src = 'enemy.png';
+        //
+        // const width = image.width * 0.1;
+        // const height = image.height * 0.1;
 
         return this.npcs.map(npc => {
-            return {
-                x: npc.x* levelWidth,
-                y: (floorHeight - (npc.y * window.innerHeight)) - height,
-                width: width,
-                height: height,
-                image: image,
-                speed: 1.5,
-                startX: npc.x * levelWidth,
-                endX: npc.endX * levelWidth,
-                movingRight: true
-            };
-        })
+            return new Turtle(npc.x* levelWidth, npc.y, floorHeight, npc.speed, npc.x * levelWidth, npc.endX * levelWidth, true)
+        });
+
+        // return this.npcs.map(npc => {
+        //     return {
+        //         x: npc.x* levelWidth,
+        //         y: (floorHeight - (npc.y * window.innerHeight)) - height,
+        //         width: width,
+        //         height: height,
+        //         image: image,
+        //         speed: 1.5,
+        //         startX: npc.x * levelWidth,
+        //         endX: npc.endX * levelWidth,
+        //         movingRight: true
+        //     };
+        // })
     }
 
     getClouds(levelWidth: number, floorHeight: number): Item[] {

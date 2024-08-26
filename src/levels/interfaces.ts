@@ -1,4 +1,4 @@
-import {Item} from "../items/interface";
+import {Item, NPC as NPCo} from "../items/interface";
 
 
 export interface GameLevel {
@@ -12,7 +12,7 @@ export interface GameLevel {
     getBushes(levelWidth: number, floorHeight: number): Item[];
     getBeers(levelWidth: number, floorHeight: number): Item[];
     createObstacles(levelWidth: number, floorHeight: number): [Platform[], Hole[]];
-    createNPCs(levelWidth: number, floorHeight: number): NPC[];
+    createNPCs(levelWidth: number, floorHeight: number): NPCo[];
 
 }
 
@@ -21,22 +21,6 @@ export interface NPCData {
     y: number;
     speed: number;
     endX: number;
-}
-
-export interface NPC extends NPCData {
-    width: number;
-    height: number;
-    image: HTMLImageElement;
-    startX: number;
-    movingRight: boolean;
-}
-
-export interface BackgroundItem {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    image: HTMLImageElement;
 }
 
 export interface ObjectPosition {

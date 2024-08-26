@@ -6,12 +6,12 @@ import {LevelAbstract} from "../level.abstract";
 import {GameLevel} from "../interfaces";
 
 
-export class Level1 extends LevelAbstract implements GameLevel {
+export class Level extends LevelAbstract implements GameLevel {
 
     castleImage: HTMLImageElement = new Image();
     castleWidth: number = 0.35 * window.innerWidth;
     castleHeight: number = 0.5 * window.innerHeight;
-    skyColor: string = 'turquoise';
+    skyColor: string = 'black';
     holesColor: string = 'red';
 
     constructor(floorHeight: number) {

@@ -88,7 +88,7 @@ window.onload = () => {
         canvas.height = window.innerHeight;
 
         const player = new Player(gameMusic);
-        const level = new Level();
+        const level = new Level(0);
         let score = 0;
         let isMovingLeft = false;
         let isMovingRight = false;

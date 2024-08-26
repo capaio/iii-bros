@@ -1,7 +1,7 @@
 import { Player } from './player';
 import {GameLevel, Hole,  Platform} from "./levels/interfaces";
-import {Level1} from "./levels/level-1/level-1";
 import {Item, NPC} from "./items/interface";
+import {LevelSelector} from "./levels/level-selector";
 
 export class Level {
     beerItems: Item[] = [];
@@ -18,10 +18,9 @@ export class Level {
 
     currentScreenOffset: number = 0;
 
-    constructor() {
+    constructor(levelNo: number) {
         this.floorHeight = window.innerHeight - 40; // Adjusted floor height
-        this.gameLevel = new Level1(this.floorHeight);
-
+        this.gameLevel = (new LevelSelector(this.floorHeight)).getLevel(levelNo);
 
         document.body.style.backgroundColor = this.gameLevel.skyColor;
 

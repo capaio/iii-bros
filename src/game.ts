@@ -216,7 +216,7 @@ window.onload = () => {
             victoryText.style.textAlign = 'center';
 
             const codeText = document.createElement('div');
-            codeText.innerText = 'Your code is 268';
+            codeText.innerText = config.victoryWrite;
             codeText.style.fontSize = '24px';
             codeText.style.marginTop = '10px';
             victoryText.appendChild(codeText);
@@ -273,7 +273,7 @@ window.onload = () => {
             victoryText.style.textAlign = 'center';
 
             const codeText = document.createElement('div');
-            codeText.innerText = 'But your journey is not over yet!';
+            codeText.innerText = config.endLevelWrite
             codeText.style.fontSize = '24px';
             codeText.style.marginTop = '10px';
             victoryText.appendChild(codeText);

@@ -12,13 +12,11 @@
   ],
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
+  "cordova": {
+    "platforms": [],
+    "plugins": {}
+  },
   "devDependencies": {
     "cordova-android": "^13.0.0"
-  },
-  "cordova": {
-    "platforms": [
-      "android"
-    ],
-    "plugins": {}
   }
 }

@@ -42,6 +42,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
+                { from: `./assets/cordova/${process.env.ICON}`, to: `${process.env.ICON}` },
                 { from: `./assets/imgs/${process.env.COLLECTIBLE_IMAGE}`, to: `${process.env.COLLECTIBLE_IMAGE}` },
                 { from: `./assets/imgs/${process.env.BUSH_IMAGE}`, to: `${process.env.BUSH_IMAGE}` },
                 { from: `./assets/imgs/${process.env.CLOUD_IMAGE}`, to: `${process.env.CLOUD_IMAGE}` },

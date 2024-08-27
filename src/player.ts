@@ -1,3 +1,5 @@
+import {config} from "./config";
+
 export class Player {
     x: number;
     y: number;
@@ -22,7 +24,7 @@ export class Player {
     constructor(gameMusic: HTMLAudioElement) {
         this.gameMusic = gameMusic; // Initialize game music
         this.image = new Image();
-        this.image.src = 'player.png';
+        this.image.src = config.player;
         this.x = 0.05 * window.innerWidth; // Spawn 5% from the left
         this.y = 0;
         this.width = 0;

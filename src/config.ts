@@ -13,8 +13,10 @@ const getVariable = <T extends string|number>(name: string): T => {
 }
 
 export const config = {
+    victoryWrite: getVariable<string>('VICTORY_WRITE'),
+    endLevelWrite: getVariable<string>('END_LEVEL_WRITE'),
     splashScreen: getVariable<string>('SPLASH_SCREEN'),
-    player: getVariable<string>('PLAYER'), //'player.png',
+    player: getVariable<string>('PLAYER'),
     time: getVariable<number>('TIME_LEFT'),
     totalLevels: getVariable<number>('TOTAL_LEVELS'),
     level1: {

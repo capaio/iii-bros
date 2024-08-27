@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+dotenv.config({ path: './.env' });
 
 module.exports = {
     entry: './src/game.ts', // Entry TypeScript file
@@ -30,29 +33,32 @@ module.exports = {
         ],
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(dotenv.config().parsed)
+        }),
         new HtmlWebpackPlugin({
             template: './index.html', // Source HTML file
             filename: 'index.html' // Output HTML file
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: './assets/imgs/beer.png', to: 'beer.png' },
-                { from: './assets/imgs/bush.png', to: 'bush.png' },
-                { from: './assets/imgs/cloud.png', to: 'cloud.png' },
-                { from: './assets/imgs/enemy.png', to: 'enemy.png' },
-                { from: './assets/imgs/brick.png', to: 'brick.png' },
-                { from: './assets/imgs/castle.webp', to: 'castle.webp' },
-                { from: './assets/imgs/iii.png', to: 'iii.png' },
-                { from: './assets/imgs/splash_screen.webp', to: 'splash_screen.webp' },
-                { from: './assets/music/coin.wav', to: 'coin.wav' },
-                { from: './assets/music/firework.wav', to: 'firework.wav' },
-                { from: './assets/music/jump.wav', to: 'jump.wav' },
-                { from: './assets/music/level-completed.wav', to: 'level-completed.wav' },
-                { from: './assets/music/splash-music.mp3', to: 'splash-music.mp3' },
-                { from: './assets/music/victory.mp3', to: 'victory.mp3' },
-                { from: './assets/music/game-music.mp3', to: 'game-music.mp3' },
-                { from: './assets/music/gameover.mp3', to: 'gameover.mp3' },
-                //{ from: './assets/imgs/_config.yml', to: '_config.yml' },
+                { from: `./assets/imgs/${process.env.COLLECTIBLE_IMAGE}`, to: `${process.env.COLLECTIBLE_IMAGE}` },
+                { from: `./assets/imgs/${process.env.BUSH_IMAGE}`, to: `${process.env.BUSH_IMAGE}` },
+                { from: `./assets/imgs/${process.env.CLOUD_IMAGE}`, to: `${process.env.CLOUD_IMAGE}` },
+                { from: `./assets/imgs/${process.env.NPC_IMAGE}`, to: `${process.env.NPC_IMAGE}` },
+                { from: `./assets/imgs/${process.env.LEVEL_1_CASTLE}`, to: `${process.env.LEVEL_1_CASTLE}` },
+                { from: `./assets/imgs/${process.env.LEVEL_2_CASTLE}`, to: `${process.env.LEVEL_2_CASTLE}` },
+                { from: `./assets/imgs/${process.env.PLAYER}`, to: `${process.env.PLAYER}` },
+                { from: `./assets/imgs/${process.env.SPLASH_SCREEN}`, to: `${process.env.SPLASH_SCREEN}` },
+                { from: `./assets/imgs/brick.png`, to: `brick.png` },
+                { from: `./assets/music/coin.wav`, to: `coin.wav` },
+                { from: `./assets/music/firework.wav`, to: `firework.wav` },
+                { from: `./assets/music/jump.wav`, to: `jump.wav` },
+                { from: `./assets/music/level-completed.wav`, to: `level-completed.wav` },
+                { from: `./assets/music/splash-music.mp3`, to: `splash-music.mp3` },
+                { from: `./assets/music/victory.mp3`, to: `victory.mp3` },
+                { from: `./assets/music/game-music.mp3`, to: `game-music.mp3` },
+                { from: `./assets/music/gameover.mp3`, to: `gameover.mp3` },
             ],
         }),
     ],

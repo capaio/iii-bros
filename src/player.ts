@@ -22,7 +22,7 @@ export class Player {
     constructor(gameMusic: HTMLAudioElement) {
         this.gameMusic = gameMusic; // Initialize game music
         this.image = new Image();
-        this.image.src = 'iii.png';
+        this.image.src = 'player.png';
         this.x = 0.05 * window.innerWidth; // Spawn 5% from the left
         this.y = 0;
         this.width = 0;

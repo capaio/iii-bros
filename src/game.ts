@@ -6,6 +6,7 @@ import {config} from "./config";
 window.onload = () => {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
     const splashScreen = document.getElementById('splashScreen') as HTMLDivElement;
+    splashScreen.style.backgroundImage = `url(${config.splashScreen})`;
     const playButton = document.getElementById('playButton') as HTMLButtonElement;
     const musicToggleButton = document.getElementById('musicToggleButton') as HTMLButtonElement;
     const musicIcon = document.getElementById('musicIcon') as HTMLElement;

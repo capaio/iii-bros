@@ -1,6 +1,6 @@
 export const config = {
     time: 99,
-    totalLevels: 1,
+    totalLevels: 2,
     level1: {
         background: 'turquoise',
         holesColor: 'black',

@@ -12,7 +12,7 @@ window.onload = () => {
     const scoreDisplay = document.getElementById('score') as HTMLDivElement;
     const splashMusic = document.getElementById('splashMusic') as HTMLAudioElement;
     const gameMusic = document.getElementById('gameMusic') as HTMLAudioElement;
-    const victorySound = new Audio('victory.mp3');
+    const victoryMusic = new Audio('victory.mp3');
     const collectSoundSrc = 'coin.wav';
     const fireworkSoundSrc = 'firework.wav'; // Firework sound source
     const leftButton = document.getElementById('leftButton') as HTMLButtonElement;
@@ -49,12 +49,8 @@ window.onload = () => {
         leftButton.style.display = 'flex';
         rightButton.style.display = 'flex';
         jumpButton.style.display = 'flex';
-        splashMusic.pause();
+        musicStop(splashMusic);
         currentScreen = 'game';
-
-        if (isMusicPlaying) {
-            gameMusic.play();
-        }
 
         startGame();
     });
@@ -62,21 +58,23 @@ window.onload = () => {
     musicToggleButton.addEventListener('click', () => {
         if (currentScreen === 'splash') {
             if (isMusicPlaying) {
-                splashMusic.pause();
+                splashMusic.volume = 0;
                 musicIcon.classList.remove('fa-volume-up');
                 musicIcon.classList.add('fa-volume-mute');
             } else {
-                splashMusic.play();
+                splashMusic.volume = 1;
                 musicIcon.classList.remove('fa-volume-mute');
                 musicIcon.classList.add('fa-volume-up');
             }
         } else if (currentScreen === 'game') {
             if (isMusicPlaying) {
-                gameMusic.pause();
+                gameMusic.volume = 0;
+                victoryMusic.volume = 0;
                 musicIcon.classList.remove('fa-volume-up');
                 musicIcon.classList.add('fa-volume-mute');
             } else {
-                gameMusic.play();
+                gameMusic.volume = 1;
+                victoryMusic.volume = 1;
                 musicIcon.classList.remove('fa-volume-mute');
                 musicIcon.classList.add('fa-volume-up');
             }
@@ -85,6 +83,10 @@ window.onload = () => {
     });
 
     const startGame = (currentLevel: number = 0) => {
+
+        if (isMusicPlaying) {
+            musicPlay(gameMusic);
+        }
 
         let officialTimer: NodeJS.Timeout;
 
@@ -109,7 +111,7 @@ window.onload = () => {
                 showLevelCompletedScreen();
                 timeLeft = config.time;
                 setTimeout(() => {
-                    victorySound.pause();
+                    musicStop(victoryMusic);
                     hideLevelCompletedScreen();
                     clearTimeout(officialTimer);
                     return startGame(currentLevel + 1)
@@ -236,9 +238,9 @@ window.onload = () => {
             document.body.appendChild(victoryText);
 
             // Stop all other music and play victory sound
-            splashMusic.pause();
-            gameMusic.pause();
-            victorySound.play();
+            musicStop(splashMusic);
+            musicStop(gameMusic);
+            musicPlay(victoryMusic);
 
             // Create initial fireworks
             createFirework();
@@ -278,9 +280,9 @@ window.onload = () => {
             document.body.appendChild(victoryText);
 
             // Stop all other music and play victory sound
-            splashMusic.pause();
-            gameMusic.pause();
-            victorySound.play();
+            musicStop(splashMusic);
+            musicStop(gameMusic);
+            musicPlay(victoryMusic);
 
         };
 
@@ -377,4 +379,19 @@ window.onload = () => {
         gameLoop();
         updateTimer();
     };
+
+    const musicStop = (audio: HTMLAudioElement) => {
+        audio.pause()
+        audio.currentTime = 0
+    }
+
+    const musicPlay = (audio: HTMLAudioElement) => {
+        if(isMusicPlaying) {
+            audio.play()
+        }
+    }
+
+    const musicPause = (audio: HTMLAudioElement) => {
+        audio.pause()
+    }
 };

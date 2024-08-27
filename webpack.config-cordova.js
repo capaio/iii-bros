@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
+const WebpackHookPlugin = require('webpack-hook-plugin');
 
 module.exports = {
     entry: './src/game.ts', // Entry TypeScript file
@@ -62,6 +63,9 @@ module.exports = {
                 { from: `./assets/music/gameover.mp3`, to: `gameover.mp3` },
             ],
         }),
+        new WebpackHookPlugin({
+            onBuildEnd:[`node cordova-build.js`]
+        })
     ],
     devServer: {
         static: './cordova/www',
